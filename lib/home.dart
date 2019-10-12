@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tabs/create.dart';
 
 class Home extends StatelessWidget {
   static const String id = "home_screen";
@@ -11,7 +12,9 @@ class Home extends StatelessWidget {
       ),
       body: Container(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, Create.id);
+        },
         child: Icon(Icons.add),
       ),
     );
