@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tabs/home.dart';
 
 void main() => runApp(App());
 
@@ -7,9 +8,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Tabs',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData.dark(),
+      initialRoute: Home.id,
+      routes: {Home.id: (context) => Home()},
     );
   }
 }
