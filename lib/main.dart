@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:tabs/create.dart';
 import 'package:tabs/home.dart';
 
@@ -8,7 +7,6 @@ void main() => runApp(App());
 class App extends StatelessWidget {
   final Color primaryColor = Colors.yellow[400];
   final Color accentColor = Colors.lightBlueAccent;
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
