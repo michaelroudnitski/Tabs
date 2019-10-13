@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class CreateForm extends StatefulWidget {
@@ -7,6 +8,9 @@ class CreateForm extends StatefulWidget {
 
 class _CreateFormState extends State<CreateForm> {
   final _formKey = GlobalKey<FormState>();
+  final _firestore = Firestore.instance;
+  final _nameController = TextEditingController();
+  final _amountController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +24,7 @@ class _CreateFormState extends State<CreateForm> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                controller: _nameController,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.person),
                   hintText: "Name",
@@ -35,6 +40,7 @@ class _CreateFormState extends State<CreateForm> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
+                controller: _amountController,
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.attach_money),
@@ -54,10 +60,14 @@ class _CreateFormState extends State<CreateForm> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: RaisedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState.validate()) {
                     Scaffold.of(context).showSnackBar(
-                        SnackBar(content: Text('Processing Data')));
+                        SnackBar(content: Text('Data is being saved...')));
+                    _firestore.collection("tabs").add({
+                      "name": _nameController.text,
+                      "amount": double.parse(_amountController.text),
+                    });
                   }
                 },
                 child: Text('Submit'),
