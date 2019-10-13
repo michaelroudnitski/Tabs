@@ -11,6 +11,7 @@ class Home extends StatelessWidget {
         title: Text("TABS"),
       ),
       body: Container(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pushNamed(context, Create.id);

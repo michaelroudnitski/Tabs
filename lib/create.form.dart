@@ -17,18 +17,39 @@ class _CreateFormState extends State<CreateForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: "Name",
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(16.0))),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.person),
+                  hintText: "Name",
+                ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter a name';
+                  }
+                  return null;
+                },
               ),
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please enter a name';
-                }
-                return null;
-              },
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.attach_money),
+                  hintText: "Amount",
+                ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter the amount owed';
+                  }
+                  if (double.tryParse(value) == null) {
+                    return "Please enter a valid number";
+                  }
+                  return null;
+                },
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
