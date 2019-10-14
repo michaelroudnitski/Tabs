@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tabs/create.dart';
+import 'package:tabs/tabsList.dart';
 
 class Home extends StatelessWidget {
   static const String id = "home_screen";
@@ -7,10 +8,9 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("TABS"),
+      body: SafeArea(
+        child: TabsList(),
       ),
-      body: Container(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         onPressed: () {

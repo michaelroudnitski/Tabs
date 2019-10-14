@@ -8,7 +8,6 @@ class CreateForm extends StatefulWidget {
 
 class _CreateFormState extends State<CreateForm> {
   final _formKey = GlobalKey<FormState>();
-  final _firestore = Firestore.instance;
   final _nameController = TextEditingController();
   final _amountController = TextEditingController();
 
@@ -62,12 +61,11 @@ class _CreateFormState extends State<CreateForm> {
               child: RaisedButton(
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
-                    Scaffold.of(context).showSnackBar(
-                        SnackBar(content: Text('Data is being saved...')));
-                    _firestore.collection("tabs").add({
+                    Firestore.instance.collection("tabs").add({
                       "name": _nameController.text,
                       "amount": double.parse(_amountController.text),
                     });
+                    Navigator.pop(context);
                   }
                 },
                 child: Text('Submit'),
