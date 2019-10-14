@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tabs/create.dart';
-import 'package:tabs/home.dart';
+import 'package:tabs/screens/create.dart';
+import 'package:tabs/screens/home.dart';
 
 void main() => runApp(App());
 
