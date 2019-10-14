@@ -1,47 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class TabsList extends StatefulWidget {
-  @override
-  _TabsListState createState() => _TabsListState();
-}
-
-class _TabsListState extends State<TabsList> {
-  final Firestore _firestore = Firestore.instance;
-  List<DocumentSnapshot> tabs;
-
-  void getTabs() async {
-    QuerySnapshot data = await _firestore.collection("tabs").getDocuments();
-    setState(() {
-      this.tabs = data.documents;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    this.getTabs();
-  }
-
+class TabsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        padding: EdgeInsets.all(8.0),
-        itemCount: this.tabs.length,
-        itemBuilder: (context, index) {
-          return TabCard(tab: this.tabs[index]);
-        });
+    return Consumer<QuerySnapshot>(
+      builder: (context, tabsData, child) {
+        return ListView.builder(
+            padding: EdgeInsets.all(8.0),
+            itemCount: tabsData.documents.length,
+            itemBuilder: (context, index) {
+              return TabCard(
+                tab: tabsData.documents[index],
+              );
+            });
+      },
+    );
   }
 }
 
 class TabCard extends StatelessWidget {
-  DocumentSnapshot tab;
-  String _name;
-  double _amount;
-  TabCard({this.tab}) {
-    this._name = this.tab["name"];
-    this._amount = this.tab["amount"];
-  }
+  final DocumentSnapshot tab;
+  TabCard({@required this.tab});
 
   @override
   Widget build(BuildContext context) {
@@ -50,26 +31,18 @@ class TabCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
-            title: Text(this._amount.toString()),
+            title: Text(this.tab["amount"].toString()),
+            subtitle: Text(this.tab["name"]),
             trailing: Icon(Icons.receipt),
-            subtitle: Text(this._name),
           ),
           ButtonTheme.bar(
             child: ButtonBar(
               children: <Widget>[
-                // TODO: update button
-                // FlatButton(
-                //   child: Text('UPDATE'),
-                //   onPressed: () {},
-                // ),
                 FlatButton(
-                  child: Text(
-                    'PAID',
-                    style: TextStyle(color: Colors.green),
-                  ),
-                  onPressed: () {
+                  child: Text('PAID'),
+                  onPressed: () async {
                     try {
-                      Firestore.instance
+                      await Firestore.instance
                           .collection("tabs")
                           .document(this.tab.documentID)
                           .delete();
