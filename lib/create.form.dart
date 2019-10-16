@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CreateForm extends StatefulWidget {
   @override
@@ -10,6 +11,39 @@ class _CreateFormState extends State<CreateForm> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _amountController = TextEditingController();
+  PermissionStatus _permission;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkPermission();
+  }
+
+  void _updatePermission(PermissionStatus permission) {
+    print(permission.toString());
+    if (permission == PermissionStatus.unknown)
+      _askPermission();
+    else if (permission != _permission) {
+      setState(() {
+        _permission = permission;
+      });
+    }
+  }
+
+  _askPermission() {
+    PermissionHandler()
+        .requestPermissions([PermissionGroup.contacts]).then(_checkPermission);
+  }
+
+  _checkPermission([Map<PermissionGroup, PermissionStatus> statuses]) {
+    if (statuses != null) {
+      _updatePermission(statuses[PermissionGroup.contacts]);
+    } else {
+      PermissionHandler()
+          .checkPermissionStatus(PermissionGroup.contacts)
+          .then(_updatePermission);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
