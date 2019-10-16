@@ -17,6 +17,7 @@ dependencies:
   permission_handler:
   contacts_service:
   flutter_typeahead:
+  flutter_money_formatter:
 
 dev_dependencies:
   flutter_test:
