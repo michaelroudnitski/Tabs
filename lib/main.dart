@@ -12,7 +12,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Tabs',
       theme: ThemeData(
-        // brightness: Brightness.dark,
+        brightness: Brightness.dark,
         primaryColor: primaryColor,
         accentColor: accentColor,
         buttonTheme: ButtonThemeData(

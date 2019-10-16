@@ -16,6 +16,7 @@ dependencies:
   provider:
   permission_handler:
   contacts_service:
+  flutter_typeahead:
 
 dev_dependencies:
   flutter_test:

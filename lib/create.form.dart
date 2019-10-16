@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:contacts_service/contacts_service.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class CreateForm extends StatefulWidget {
   @override
@@ -52,6 +53,16 @@ class _CreateFormState extends State<CreateForm> {
     });
   }
 
+  List<String> _getContactsSuggestions(String pattern) {
+    if (_contacts != null && _contacts.length > 0 && pattern.length > 0) {
+      return _contacts
+          .where((contact) =>
+              contact.toLowerCase().contains(pattern.toLowerCase()))
+          .toList();
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -59,21 +70,33 @@ class _CreateFormState extends State<CreateForm> {
       child: Padding(
         padding: const EdgeInsets.all(32.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Text(_contacts != null && _contacts.length > 0 ? _contacts[0] : ""),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                controller: _nameController,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.person),
-                  hintText: "Name",
+              child: TypeAheadFormField(
+                textFieldConfiguration: TextFieldConfiguration(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.person),
+                    labelText: 'Name',
+                  ),
                 ),
+                suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0)),
+                suggestionsCallback: _getContactsSuggestions,
+                itemBuilder: (context, suggestion) {
+                  return ListTile(
+                    title: Text(suggestion),
+                  );
+                },
+                onSuggestionSelected: (suggestion) {
+                  _nameController.text = suggestion;
+                },
+                hideOnError: true,
+                hideOnEmpty: true,
                 validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter a name';
-                  }
+                  if (value.isEmpty) return 'Please provide a name';
                   return null;
                 },
               ),
@@ -85,21 +108,18 @@ class _CreateFormState extends State<CreateForm> {
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.attach_money),
-                  hintText: "Amount",
+                  labelText: "Amount",
                 ),
                 validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Please enter the amount owed';
-                  }
-                  if (double.tryParse(value) == null) {
+                  if (value.isEmpty) return 'Please enter the amount owed';
+                  if (double.tryParse(value) == null)
                     return "Please enter a valid number";
-                  }
                   return null;
                 },
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              padding: const EdgeInsets.all(8.0),
               child: RaisedButton(
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
