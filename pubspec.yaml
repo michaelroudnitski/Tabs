@@ -15,6 +15,7 @@ dependencies:
   cloud_firestore:
   provider:
   permission_handler:
+  contacts_service:
 
 dev_dependencies:
   flutter_test:
