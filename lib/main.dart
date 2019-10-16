@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tabs/create.dart';
-import 'package:tabs/home.dart';
+import 'package:tabs/screens/create.dart';
+import 'package:tabs/screens/home.dart';
 
 void main() => runApp(App());
 
@@ -12,7 +12,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Tabs',
       theme: ThemeData(
-        // brightness: Brightness.dark,
+        brightness: Brightness.dark,
         primaryColor: primaryColor,
         accentColor: accentColor,
         buttonTheme: ButtonThemeData(

@@ -10,11 +10,13 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons:
-  sqflite:
-  path:
   firebase_core:
   # firebase_auth:
   cloud_firestore:
+  provider:
+  permission_handler:
+  contacts_service:
+  flutter_typeahead:
 
 dev_dependencies:
   flutter_test:
