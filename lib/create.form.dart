@@ -49,7 +49,11 @@ class _CreateFormState extends State<CreateForm> {
 
   _setContacts(Iterable<Contact> contacts) {
     setState(() {
-      _contacts = contacts.map((contact) => contact.displayName).toList();
+      _contacts = contacts
+          .map((contact) => contact.displayName != null
+              ? contact.displayName
+              : contact.givenName)
+          .toList();
     });
   }
 
