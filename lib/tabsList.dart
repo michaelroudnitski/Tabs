@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 
 class TabsList extends StatelessWidget {
   @override
@@ -31,7 +32,11 @@ class TabCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
-            title: Text(this.tab["amount"].toString()),
+            title: Text(
+              FlutterMoneyFormatter(amount: this.tab["amount"])
+                  .output
+                  .symbolOnLeft,
+            ),
             subtitle: Text(this.tab["name"]),
             trailing: Icon(Icons.receipt),
           ),
