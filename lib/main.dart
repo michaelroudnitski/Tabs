@@ -5,16 +5,19 @@ import 'package:tabs/screens/home.dart';
 void main() => runApp(App());
 
 class App extends StatelessWidget {
-  final Color primaryColor = Colors.yellow[400];
-  final Color accentColor = Colors.lightBlueAccent;
+  final Color primaryColor = Color.fromARGB(0xFF, 3, 218, 157);
+  final Color accentColor = Color.fromARGB(0xFF, 218, 3, 25);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Tabs',
       theme: ThemeData(
-        brightness: Brightness.dark,
         primaryColor: primaryColor,
         accentColor: accentColor,
+        textTheme: TextTheme(
+          display1: TextStyle(fontFamily: 'Prata'),
+          button: TextStyle(color: Colors.white),
+        ),
         buttonTheme: ButtonThemeData(
           buttonColor: primaryColor,
           shape: RoundedRectangleBorder(
@@ -24,10 +27,10 @@ class App extends StatelessWidget {
         inputDecorationTheme: InputDecorationTheme(
           contentPadding: EdgeInsets.symmetric(vertical: 8.0),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(38.0),
+            borderRadius: BorderRadius.circular(8.0),
           ),
           border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(38.0),
+              borderRadius: BorderRadius.circular(8.0),
               borderSide: BorderSide(color: Colors.yellow, width: 4.0)),
         ),
       ),
