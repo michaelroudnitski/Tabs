@@ -26,3 +26,7 @@ dev_dependencies:
 # The following section is specific to Flutter.
 flutter:
   uses-material-design: true
+  fonts:
+    - family: Prata
+      fonts:
+        - asset: fonts/Prata-Regular.ttf

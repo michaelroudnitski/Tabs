@@ -39,9 +39,15 @@ class TabCard extends StatelessWidget {
               FlutterMoneyFormatter(amount: this.tab["amount"])
                   .output
                   .symbolOnLeft,
+              style: Theme.of(context)
+                  .textTheme
+                  .title
+                  .copyWith(color: Theme.of(context).primaryColor),
             ),
-            subtitle: Text(this.tab["name"]),
-            trailing: Icon(Icons.receipt),
+            subtitle: Text(
+              this.tab["name"],
+              style: Theme.of(context).textTheme.subhead,
+            ),
           ),
           ButtonTheme.bar(
             child: ButtonBar(
