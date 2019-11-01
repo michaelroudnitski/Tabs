@@ -36,14 +36,10 @@ class TabCard extends StatelessWidget {
         children: <Widget>[
           ListTile(
             title: Text(
-              FlutterMoneyFormatter(amount: this.tab["amount"])
-                  .output
-                  .symbolOnLeft,
-              style: Theme.of(context)
-                  .textTheme
-                  .title
-                  .copyWith(color: Theme.of(context).primaryColor),
-            ),
+                FlutterMoneyFormatter(amount: this.tab["amount"])
+                    .output
+                    .symbolOnLeft,
+                style: Theme.of(context).textTheme.title),
             subtitle: Text(
               this.tab["name"],
               style: Theme.of(context).textTheme.subhead,
