@@ -8,14 +8,17 @@ class TabsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<QuerySnapshot>(
       builder: (context, tabsData, child) {
-        return ListView.builder(
-            padding: EdgeInsets.all(8.0),
-            itemCount: tabsData.documents.length,
-            itemBuilder: (context, index) {
-              return TabCard(
-                tab: tabsData.documents[index],
-              );
-            });
+        if (tabsData != null)
+          return ListView.builder(
+              padding: EdgeInsets.all(8.0),
+              itemCount: tabsData.documents.length,
+              itemBuilder: (context, index) {
+                return TabCard(
+                  tab: tabsData.documents[index],
+                );
+              });
+        else
+          return Text("No open tabs");
       },
     );
   }
