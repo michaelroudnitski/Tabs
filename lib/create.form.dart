@@ -11,8 +11,10 @@ class CreateForm extends StatefulWidget {
 
 class _CreateFormState extends State<CreateForm> {
   final _formKey = GlobalKey<FormState>();
+  final _pageViewController = PageController();
   final _nameController = TextEditingController();
   final _amountController = TextEditingController();
+  final _descriptionController = TextEditingController();
   PermissionStatus _permission;
   List<String> _contacts;
 
@@ -67,23 +69,72 @@ class _CreateFormState extends State<CreateForm> {
     return null;
   }
 
+  Widget buildPage(
+      {@required String title,
+      @required String description,
+      @required Widget textField,
+      bool isLast}) {
+    void onPress() {
+      if (_formKey.currentState.validate()) {
+        if (isLast == null) {
+          _pageViewController.nextPage(
+            duration: const Duration(milliseconds: 400),
+            curve: Curves.ease,
+          );
+        } else {
+          Firestore.instance.collection("tabs").add({
+            "name": _nameController.text,
+            "amount": double.parse(_amountController.text),
+            "description": _descriptionController.text,
+          });
+          Navigator.pop(context);
+        }
+      }
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          title,
+          style: Theme.of(context).textTheme.display1,
+        ),
+        Text(description),
+        SizedBox(height: 42),
+        textField,
+        Expanded(
+          child: Align(
+            alignment: Alignment.bottomRight,
+            child: RaisedButton(
+              onPressed: () async {
+                onPress();
+              },
+              child: Text(isLast == null ? 'Next' : 'Submit'),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
       child: Padding(
         padding: const EdgeInsets.all(32.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: PageView(
+          controller: _pageViewController,
+          physics: NeverScrollableScrollPhysics(),
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TypeAheadFormField(
+            buildPage(
+              title: "Name",
+              description: "Enter the name of the person who owes you money.",
+              textField: TypeAheadFormField(
                 textFieldConfiguration: TextFieldConfiguration(
                   controller: _nameController,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.person),
-                    labelText: 'Name',
                   ),
                 ),
                 suggestionsBoxDecoration: SuggestionsBoxDecoration(
@@ -105,14 +156,14 @@ class _CreateFormState extends State<CreateForm> {
                 },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
+            buildPage(
+              title: "Amount",
+              description: "Enter the amount ${_nameController.text} owes you",
+              textField: TextFormField(
                 controller: _amountController,
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.attach_money),
-                  labelText: "Amount",
                 ),
                 validator: (value) {
                   if (value.isEmpty) return 'Please enter the amount owed';
@@ -122,19 +173,20 @@ class _CreateFormState extends State<CreateForm> {
                 },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: RaisedButton(
-                onPressed: () async {
-                  if (_formKey.currentState.validate()) {
-                    Firestore.instance.collection("tabs").add({
-                      "name": _nameController.text,
-                      "amount": double.parse(_amountController.text),
-                    });
-                    Navigator.pop(context);
-                  }
+            buildPage(
+              isLast: true,
+              title: "What's this for?",
+              description:
+                  "Why does ${_nameController.text} owe you \$${_amountController.text}?",
+              textField: TextFormField(
+                controller: _descriptionController,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.message),
+                ),
+                validator: (value) {
+                  if (value.isEmpty) return 'Please enter a reason';
+                  return null;
                 },
-                child: Text('Submit'),
               ),
             ),
           ],
