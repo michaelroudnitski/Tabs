@@ -14,8 +14,12 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primaryColor: primaryColor,
         accentColor: accentColor,
+        appBarTheme: AppBarTheme(color: Colors.white),
         textTheme: TextTheme(
-          display1: TextStyle(fontFamily: 'Prata', color: Colors.black87),
+          display1: TextStyle(
+              fontFamily: 'Prata',
+              color: Colors.black87,
+              fontWeight: FontWeight.bold),
           button: TextStyle(color: Colors.white),
         ),
         buttonTheme: ButtonThemeData(
