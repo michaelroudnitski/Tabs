@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:contacts_service/contacts_service.dart';
+import 'package:tabs/services/contacts.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class CreateForm extends StatefulWidget {
@@ -17,60 +16,6 @@ class _CreateFormState extends State<CreateForm> {
   final _descriptionController = TextEditingController();
   List<Widget> _pages;
   double _formProgress = 0.15;
-
-  PermissionStatus _permission;
-  List<String> _contacts;
-
-  @override
-  void initState() {
-    super.initState();
-    _checkPermission();
-  }
-
-  void _updatePermission(PermissionStatus permission) {
-    if (permission == PermissionStatus.unknown)
-      _askPermission();
-    else if (permission != _permission) {
-      if (permission == PermissionStatus.granted) {
-        ContactsService.getContacts(withThumbnails: false).then(_setContacts);
-      }
-    }
-  }
-
-  _askPermission() {
-    PermissionHandler()
-        .requestPermissions([PermissionGroup.contacts]).then(_checkPermission);
-  }
-
-  _checkPermission([Map<PermissionGroup, PermissionStatus> statuses]) {
-    if (statuses != null) {
-      _updatePermission(statuses[PermissionGroup.contacts]);
-    } else {
-      PermissionHandler()
-          .checkPermissionStatus(PermissionGroup.contacts)
-          .then(_updatePermission);
-    }
-  }
-
-  _setContacts(Iterable<Contact> contacts) {
-    setState(() {
-      _contacts = contacts
-          .map((contact) => contact.displayName != null
-              ? contact.displayName
-              : contact.givenName)
-          .toList();
-    });
-  }
-
-  List<String> _getContactsSuggestions(String pattern) {
-    if (_contacts != null && _contacts.length > 0 && pattern.length > 0) {
-      return _contacts
-          .where((contact) =>
-              contact.toLowerCase().contains(pattern.toLowerCase()))
-          .toList();
-    }
-    return null;
-  }
 
   Widget buildPage({
     @required String title,
@@ -142,7 +87,9 @@ class _CreateFormState extends State<CreateForm> {
           ),
           suggestionsBoxDecoration: SuggestionsBoxDecoration(
               borderRadius: BorderRadius.circular(8.0)),
-          suggestionsCallback: _getContactsSuggestions,
+          suggestionsCallback: (pattern) async {
+            return await Contacts.queryContacts(pattern);
+          },
           itemBuilder: (context, suggestion) {
             return ListTile(
               title: Text(suggestion),
