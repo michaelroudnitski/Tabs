@@ -15,7 +15,7 @@ class App extends StatelessWidget {
         primaryColor: primaryColor,
         accentColor: accentColor,
         textTheme: TextTheme(
-          display1: TextStyle(fontFamily: 'Prata'),
+          display1: TextStyle(fontFamily: 'Prata', color: Colors.black87),
           button: TextStyle(color: Colors.white),
         ),
         buttonTheme: ButtonThemeData(
