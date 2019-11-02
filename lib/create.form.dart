@@ -15,6 +15,7 @@ class _CreateFormState extends State<CreateForm> {
   final _nameController = TextEditingController();
   final _amountController = TextEditingController();
   final _descriptionController = TextEditingController();
+
   PermissionStatus _permission;
   List<String> _contacts;
 
@@ -77,6 +78,7 @@ class _CreateFormState extends State<CreateForm> {
     void onPress() {
       if (_formKey.currentState.validate()) {
         if (isLast == null) {
+          FocusScope.of(context).unfocus();
           _pageViewController.nextPage(
             duration: const Duration(milliseconds: 400),
             curve: Curves.ease,
@@ -133,6 +135,7 @@ class _CreateFormState extends State<CreateForm> {
               textField: TypeAheadFormField(
                 textFieldConfiguration: TextFieldConfiguration(
                   controller: _nameController,
+                  autofocus: true,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.person),
                   ),
@@ -161,6 +164,7 @@ class _CreateFormState extends State<CreateForm> {
               description: "Enter the amount ${_nameController.text} owes you",
               textField: TextFormField(
                 controller: _amountController,
+                autofocus: true,
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.attach_money),
@@ -180,6 +184,7 @@ class _CreateFormState extends State<CreateForm> {
                   "Why does ${_nameController.text} owe you \$${_amountController.text}?",
               textField: TextFormField(
                 controller: _descriptionController,
+                autofocus: true,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.message),
                 ),
