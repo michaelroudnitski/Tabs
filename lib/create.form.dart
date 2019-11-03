@@ -38,8 +38,8 @@ class _CreateFormState extends State<CreateForm> {
       _formProgress -= 1 / _pages.length;
       FocusScope.of(context).unfocus();
       _pageViewController.previousPage(
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.linear,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.fastOutSlowIn,
       );
     }
 
@@ -47,8 +47,8 @@ class _CreateFormState extends State<CreateForm> {
       _formProgress += 1 / _pages.length;
       FocusScope.of(context).unfocus();
       _pageViewController.nextPage(
-        duration: const Duration(milliseconds: 400),
-        curve: Curves.linear,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.fastOutSlowIn,
       );
     }
 
