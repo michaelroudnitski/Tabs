@@ -17,31 +17,39 @@ class _CreateFormState extends State<CreateForm> {
   List<Widget> _pages;
   double _formProgress = 0.15;
 
+  void _submitTab() {
+    Firestore.instance.collection("tabs").add({
+      "name": _nameController.text,
+      "amount": double.parse(_amountController.text),
+      "description": _descriptionController.text,
+      "time": DateTime.now(),
+    });
+    Navigator.pop(context);
+  }
+
   Widget buildPage({
     @required String title,
     @required String description,
     @required Widget textField,
+    bool isFirst,
     bool isLast,
   }) {
-    void onPress() {
-      if (_formKey.currentState.validate()) {
-        _formProgress += 1 / _pages.length;
-        if (isLast == null) {
-          FocusScope.of(context).unfocus();
-          _pageViewController.nextPage(
-            duration: const Duration(milliseconds: 400),
-            curve: Curves.ease,
-          );
-        } else {
-          Firestore.instance.collection("tabs").add({
-            "name": _nameController.text,
-            "amount": double.parse(_amountController.text),
-            "description": _descriptionController.text,
-            "time": DateTime.now(),
-          });
-          Navigator.pop(context);
-        }
-      }
+    void goBack() {
+      _formProgress -= 1 / _pages.length;
+      FocusScope.of(context).unfocus();
+      _pageViewController.previousPage(
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.linear,
+      );
+    }
+
+    void goNext() {
+      _formProgress += 1 / _pages.length;
+      FocusScope.of(context).unfocus();
+      _pageViewController.nextPage(
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.linear,
+      );
     }
 
     return Padding(
@@ -59,11 +67,31 @@ class _CreateFormState extends State<CreateForm> {
           Expanded(
             child: Align(
               alignment: Alignment.bottomRight,
-              child: RaisedButton(
-                onPressed: () async {
-                  onPress();
-                },
-                child: Text(isLast == true ? 'Submit' : 'Next'),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  FlatButton(
+                    child: Text(isFirst == true ? "Cancel" : "Back"),
+                    onPressed: () {
+                      if (isFirst == true)
+                        Navigator.pop(context);
+                      else
+                        goBack();
+                    },
+                  ),
+                  RaisedButton(
+                    child: Text(isLast == true ? 'Submit' : 'Next'),
+                    onPressed: () {
+                      if (_formKey.currentState.validate()) {
+                        if (isLast == null) {
+                          goNext();
+                        } else {
+                          _submitTab();
+                        }
+                      }
+                    },
+                  ),
+                ],
               ),
             ),
           ),
@@ -76,38 +104,38 @@ class _CreateFormState extends State<CreateForm> {
   Widget build(BuildContext context) {
     _pages = [
       buildPage(
-        title: "Name",
-        description: "Enter the name of the person who owes you money.",
-        textField: TypeAheadFormField(
-          textFieldConfiguration: TextFieldConfiguration(
-            controller: _nameController,
-            textCapitalization: TextCapitalization.sentences,
-            autofocus: true,
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.person),
+          title: "Name",
+          description: "Enter the name of the person who owes you money.",
+          textField: TypeAheadFormField(
+            textFieldConfiguration: TextFieldConfiguration(
+              controller: _nameController,
+              textCapitalization: TextCapitalization.sentences,
+              autofocus: true,
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.person),
+              ),
             ),
+            suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                borderRadius: BorderRadius.circular(8.0)),
+            suggestionsCallback: (pattern) async {
+              return await Contacts.queryContacts(pattern);
+            },
+            itemBuilder: (context, suggestion) {
+              return ListTile(
+                title: Text(suggestion),
+              );
+            },
+            onSuggestionSelected: (suggestion) {
+              _nameController.text = suggestion;
+            },
+            hideOnError: true,
+            hideOnEmpty: true,
+            validator: (value) {
+              if (value.isEmpty) return 'Please provide a name';
+              return null;
+            },
           ),
-          suggestionsBoxDecoration: SuggestionsBoxDecoration(
-              borderRadius: BorderRadius.circular(8.0)),
-          suggestionsCallback: (pattern) async {
-            return await Contacts.queryContacts(pattern);
-          },
-          itemBuilder: (context, suggestion) {
-            return ListTile(
-              title: Text(suggestion),
-            );
-          },
-          onSuggestionSelected: (suggestion) {
-            _nameController.text = suggestion;
-          },
-          hideOnError: true,
-          hideOnEmpty: true,
-          validator: (value) {
-            if (value.isEmpty) return 'Please provide a name';
-            return null;
-          },
-        ),
-      ),
+          isFirst: true),
       buildPage(
         title: "Amount",
         description: "Enter the amount ${_nameController.text} owes you",
