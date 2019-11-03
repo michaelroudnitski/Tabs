@@ -18,6 +18,7 @@ dependencies:
   contacts_service:
   flutter_typeahead:
   flutter_money_formatter:
+  timeago:
 
 dev_dependencies:
   flutter_test:
