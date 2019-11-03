@@ -81,6 +81,7 @@ class _CreateFormState extends State<CreateForm> {
         textField: TypeAheadFormField(
           textFieldConfiguration: TextFieldConfiguration(
             controller: _nameController,
+            textCapitalization: TextCapitalization.sentences,
             autofocus: true,
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.person),
@@ -133,6 +134,7 @@ class _CreateFormState extends State<CreateForm> {
         textField: TextFormField(
           controller: _descriptionController,
           autofocus: true,
+          textCapitalization: TextCapitalization.sentences,
           decoration: InputDecoration(
             prefixIcon: Icon(Icons.message),
           ),
