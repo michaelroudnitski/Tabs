@@ -37,7 +37,7 @@ class _CreateFormState extends State<CreateForm> {
             "name": _nameController.text,
             "amount": double.parse(_amountController.text),
             "description": _descriptionController.text,
-            "time": Timestamp.now(),
+            "time": DateTime.now(),
           });
           Navigator.pop(context);
         }
