@@ -13,7 +13,7 @@ class Home extends StatelessWidget {
       body: Stack(
         children: <Widget>[
           Container(
-            height: 300,
+            height: 280,
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
               borderRadius: BorderRadius.only(
