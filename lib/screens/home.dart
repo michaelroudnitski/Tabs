@@ -10,12 +10,26 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: StreamProvider(
-          builder: (context) =>
-              Firestore.instance.collection("tabs").snapshots(),
-          child: TabsList(),
-        ),
+      body: Stack(
+        children: <Widget>[
+          Container(
+            height: 300,
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(18),
+                bottomRight: Radius.circular(18),
+              ),
+            ),
+          ),
+          SafeArea(
+            child: StreamProvider(
+              builder: (context) =>
+                  Firestore.instance.collection("tabs").snapshots(),
+              child: TabsList(),
+            ),
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
