@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -65,23 +63,6 @@ class TabCard extends StatelessWidget {
                   this.tab["description"],
                 ),
               ),
-            // ButtonTheme.bar(
-            //   child: ButtonBar(
-            //     children: <Widget>[
-            //       FlatButton(
-            //         child: Text('PAID'),
-            //         onPressed: () async {
-            //           try {
-            //             await Firestore.instance
-            //                 .collection("tabs")
-            //                 .document(this.tab.documentID)
-            //                 .delete();
-            //           } catch (e) {}
-            //         },
-            //       ),
-            //     ],
-            //   ),
-            // ),
           ],
         ),
       ),
