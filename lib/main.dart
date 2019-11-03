@@ -6,7 +6,7 @@ void main() => runApp(App());
 
 class App extends StatelessWidget {
   final Color primaryColor = Color.fromARGB(0xFF, 3, 218, 157);
-  final Color accentColor = Color.fromARGB(0xFF, 218, 3, 25);
+  final Color accentColor = Colors.redAccent;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
