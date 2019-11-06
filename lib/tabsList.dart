@@ -27,13 +27,16 @@ class TabsList extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
-                    Text("${tabsData.documents.length} open tabs"),
+                    Text(
+                      "${tabsData.documents.length} OPEN TABS",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, color: Colors.white),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Text(getTotalAmountFormatted(tabsData),
-                        style: TextStyle(
-                          // color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 36,
-                        )),
+                        style: Theme.of(context).textTheme.display2)
                   ],
                 ),
               ),

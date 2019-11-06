@@ -168,6 +168,8 @@ class _CreateFormState extends State<CreateForm> {
           ),
           validator: (value) {
             if (value.isEmpty) return 'Please enter a reason';
+            if (value.length > 21)
+              return 'Surpassed character limit. ${value.length}/21';
             return null;
           },
         ),
