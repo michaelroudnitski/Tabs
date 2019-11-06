@@ -4,18 +4,17 @@ import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 
 class TabModal extends StatelessWidget {
   final DocumentSnapshot tab;
-  String _displayAmount;
-  TabModal({@required this.tab}) {
-    _displayAmount =
-        FlutterMoneyFormatter(amount: this.tab["amount"]).output.symbolOnLeft;
-  }
+  TabModal({@required this.tab});
 
   @override
   Widget build(BuildContext context) {
+    String displayAmount =
+        FlutterMoneyFormatter(amount: this.tab["amount"]).output.symbolOnLeft;
     return Container(
       color: Color(0xff757575),
+      height: 400,
       child: Container(
-        height: 200,
+        margin: EdgeInsets.only(left: 18, right: 18),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -24,31 +23,59 @@ class TabModal extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: Row(
+          padding: const EdgeInsets.all(26.0),
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text("$_displayAmount ${this.tab["name"]}",
+                  Text("${this.tab["name"]}'s Tab",
                       style: Theme.of(context)
                           .textTheme
                           .headline
                           .copyWith(fontWeight: FontWeight.bold)),
-                  Text(
-                    "${this.tab["name"]} owes you $_displayAmount\nfor ${this.tab["description"]}",
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "Description",
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                        Text(
+                          "Amount",
+                          style: Theme.of(context).textTheme.caption,
+                        )
+                      ],
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "${this.tab["description"]}",
+                        style: Theme.of(context).textTheme.subtitle,
+                      ),
+                      Text(
+                        "$displayAmount",
+                        style: Theme.of(context).textTheme.subtitle,
+                      )
+                    ],
                   ),
                 ],
               ),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   FlatButton(
-                    child: Text("Modify"),
+                    child: Text("Change Amount"),
                     onPressed: () {},
                   ),
                   RaisedButton(
-                    child: Text("Paid"),
+                    child: Text("Close Tab"),
                     onPressed: () {
                       Firestore.instance
                           .collection("tabs")

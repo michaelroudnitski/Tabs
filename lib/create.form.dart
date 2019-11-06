@@ -36,20 +36,20 @@ class _CreateFormState extends State<CreateForm> {
   }) {
     void goBack() {
       _formProgress -= 1 / _pages.length;
-      FocusScope.of(context).unfocus();
       _pageViewController.previousPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.fastOutSlowIn,
       );
+      FocusScope.of(context).unfocus();
     }
 
     void goNext() {
       _formProgress += 1 / _pages.length;
-      FocusScope.of(context).unfocus();
       _pageViewController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.fastOutSlowIn,
       );
+      FocusScope.of(context).unfocus();
     }
 
     return Padding(
