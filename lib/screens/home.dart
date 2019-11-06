@@ -13,12 +13,14 @@ class Home extends StatelessWidget {
       body: Stack(
         children: <Widget>[
           Container(
-            height: 280,
+            height: 200,
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
               borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(18),
-                bottomRight: Radius.circular(18),
+                bottomLeft: Radius.elliptical(
+                    MediaQuery.of(context).size.width * 0.50, 18),
+                bottomRight: Radius.elliptical(
+                    MediaQuery.of(context).size.width * 0.50, 18),
               ),
             ),
           ),

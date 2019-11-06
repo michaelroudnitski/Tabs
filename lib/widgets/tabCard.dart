@@ -11,7 +11,6 @@ class TabCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 5,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(18),
       ),
@@ -41,13 +40,18 @@ class TabCard extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .headline
-                    .copyWith(fontWeight: FontWeight.w800),
+                    .copyWith(fontWeight: FontWeight.bold),
               ),
               Chip(
-                backgroundColor: Theme.of(context).accentColor.withAlpha(200),
+                backgroundColor: Theme.of(context).primaryColor.withAlpha(30),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(8),
+                  ),
+                ),
                 label: Text(
                   this.tab["description"],
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Theme.of(context).primaryColor),
                 ),
               ),
               Expanded(
