@@ -25,7 +25,7 @@ class TabsList extends StatelessWidget {
               size: 50.0,
             ),
           );
-        else if (tabsData.documents.length > 100)
+        else if (tabsData.documents.length > 0)
           return Column(
             children: <Widget>[
               Container(
