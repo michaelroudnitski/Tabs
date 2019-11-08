@@ -19,6 +19,7 @@ dependencies:
   flutter_typeahead:
   flutter_money_formatter:
   timeago:
+  flutter_spinkit:
 
 dev_dependencies:
   flutter_test:
