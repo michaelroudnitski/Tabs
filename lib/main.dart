@@ -5,8 +5,8 @@ import 'package:tabs/screens/home.dart';
 void main() => runApp(App());
 
 class App extends StatelessWidget {
-  final Color primaryColor = Color.fromARGB(0xFF, 3, 218, 157);
-  final Color accentColor = Color.fromARGB(0xFF, 218, 3, 25);
+  final Color primaryColor = Color(0xff03da9d);
+  final Color accentColor = Color(0xff333333);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -15,11 +15,17 @@ class App extends StatelessWidget {
         primaryColor: primaryColor,
         accentColor: accentColor,
         appBarTheme: AppBarTheme(color: Colors.white),
+        fontFamily: 'Rubik',
         textTheme: TextTheme(
           display1: TextStyle(
               fontFamily: 'Prata',
               color: Colors.black87,
               fontWeight: FontWeight.bold),
+          display2: TextStyle(
+            fontFamily: 'Rubik',
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+          ),
           button: TextStyle(color: Colors.white),
         ),
         buttonTheme: ButtonThemeData(
@@ -34,8 +40,8 @@ class App extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0),
           ),
           border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
-              borderSide: BorderSide(color: Colors.yellow, width: 4.0)),
+            borderRadius: BorderRadius.circular(8.0),
+          ),
         ),
       ),
       initialRoute: Home.id,
