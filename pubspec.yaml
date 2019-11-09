@@ -18,6 +18,8 @@ dependencies:
   contacts_service:
   flutter_typeahead:
   flutter_money_formatter:
+  timeago:
+  flutter_spinkit:
 
 dev_dependencies:
   flutter_test:
@@ -30,3 +32,12 @@ flutter:
     - family: Prata
       fonts:
         - asset: fonts/Prata-Regular.ttf
+    - family: Rubik
+      fonts:
+        - asset: fonts/Rubik-Regular.ttf
+        - asset: fonts/Rubik-Bold.ttf
+          weight: 700
+        - asset: fonts/Rubik-Light.ttf
+          weight: 200
+        - asset: fonts/Rubik-Medium.ttf
+          weight: 400
