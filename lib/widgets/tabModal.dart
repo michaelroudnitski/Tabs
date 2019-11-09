@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
+import 'package:tabs/widgets/changeAmountDialog.dart';
 
 class TabModal extends StatelessWidget {
   final DocumentSnapshot tab;
@@ -72,7 +74,13 @@ class TabModal extends StatelessWidget {
                 children: <Widget>[
                   FlatButton(
                     child: Text("Change Amount"),
-                    onPressed: () {},
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return ChangeAmountDialog(tab: this.tab);
+                          });
+                    },
                   ),
                   RaisedButton(
                     child: Text("Close Tab"),
