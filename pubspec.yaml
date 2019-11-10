@@ -21,6 +21,7 @@ dependencies:
   timeago:
   flutter_spinkit:
   flutter_staggered_animations:
+  wave:
 
 dev_dependencies:
   flutter_test:
