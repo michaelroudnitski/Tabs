@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tabs/screens/create.dart';
 import 'package:tabs/screens/home.dart';
+import 'package:tabs/screens/welcome.dart';
 
 void main() => runApp(App());
 
@@ -44,8 +45,9 @@ class App extends StatelessWidget {
           ),
         ),
       ),
-      initialRoute: Home.id,
+      initialRoute: Welcome.id,
       routes: {
+        Welcome.id: (context) => Welcome(),
         Home.id: (context) => Home(),
         Create.id: (context) => Create(),
       },
