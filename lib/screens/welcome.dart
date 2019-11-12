@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tabs/screens/login.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
-import './home.dart';
 import './register.dart';
 
 class Welcome extends StatelessWidget {
@@ -49,7 +49,7 @@ class Welcome extends StatelessWidget {
                         FlatButton(
                           child: Text("Sign In"),
                           onPressed: () {
-                            Navigator.pushReplacementNamed(context, Home.id);
+                            Navigator.pushNamed(context, Login.id);
                           },
                         )
                       ],

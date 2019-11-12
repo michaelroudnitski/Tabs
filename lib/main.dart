@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tabs/screens/create.dart';
 import 'package:tabs/screens/home.dart';
+import 'package:tabs/screens/login.dart';
 import 'package:tabs/screens/register.dart';
 import 'package:tabs/screens/welcome.dart';
 
@@ -50,6 +51,7 @@ class App extends StatelessWidget {
       routes: {
         Welcome.id: (context) => Welcome(),
         Register.id: (context) => Register(),
+        Login.id: (context) => Login(),
         Home.id: (context) => Home(),
         Create.id: (context) => Create(),
       },
