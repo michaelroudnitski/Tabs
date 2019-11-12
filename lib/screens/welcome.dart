@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 import './home.dart';
+import './register.dart';
 
 class Welcome extends StatelessWidget {
   static const String id = "welcome";
-  final radius = 30.0;
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +40,11 @@ class Welcome extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         RaisedButton(
-                          padding: EdgeInsets.all(16),
+                          padding: EdgeInsets.all(14),
                           child: Text("Get Started"),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, Register.id);
+                          },
                         ),
                         FlatButton(
                           child: Text("Sign In"),
