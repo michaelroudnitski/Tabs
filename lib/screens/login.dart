@@ -4,14 +4,14 @@ import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 import './home.dart';
 
-class Register extends StatefulWidget {
-  static const String id = "/register";
+class Login extends StatefulWidget {
+  static const String id = "/login";
 
   @override
-  _RegisterState createState() => _RegisterState();
+  _LoginState createState() => _LoginState();
 }
 
-class _RegisterState extends State<Register> {
+class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
 
   final _auth = FirebaseAuth.instance;
@@ -31,7 +31,7 @@ class _RegisterState extends State<Register> {
   void _submitForm() async {
     if (_formKey.currentState.validate()) {
       try {
-        final newUser = await _auth.createUserWithEmailAndPassword(
+        final newUser = await _auth.signInWithEmailAndPassword(
             email: _emailController.text, password: _passwordController.text);
         if (newUser != null) Navigator.pushReplacementNamed(context, Home.id);
       } catch (e) {
@@ -57,7 +57,7 @@ class _RegisterState extends State<Register> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "Create Account",
+                    "Welcome Back",
                     style: Theme.of(context)
                         .textTheme
                         .display1
@@ -100,7 +100,7 @@ class _RegisterState extends State<Register> {
                         SizedBox(height: 24),
                         RaisedButton(
                           padding: EdgeInsets.all(14),
-                          child: Text("Sign Up"),
+                          child: Text("Sign In"),
                           onPressed: _submitForm,
                         ),
                       ],
