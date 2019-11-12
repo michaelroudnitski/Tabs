@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tabs/screens/create.dart';
 import 'package:tabs/screens/home.dart';
+import 'package:tabs/screens/register.dart';
 import 'package:tabs/screens/welcome.dart';
 
 void main() => runApp(App());
@@ -36,7 +37,7 @@ class App extends StatelessWidget {
           ),
         ),
         inputDecorationTheme: InputDecorationTheme(
-          contentPadding: EdgeInsets.symmetric(vertical: 8.0),
+          contentPadding: EdgeInsets.all(8),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
@@ -48,6 +49,7 @@ class App extends StatelessWidget {
       initialRoute: Welcome.id,
       routes: {
         Welcome.id: (context) => Welcome(),
+        Register.id: (context) => Register(),
         Home.id: (context) => Home(),
         Create.id: (context) => Create(),
       },
