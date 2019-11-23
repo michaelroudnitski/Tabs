@@ -30,16 +30,18 @@ dev_dependencies:
 # The following section is specific to Flutter.
 flutter:
   uses-material-design: true
+  assets:
+    - assets/graphics/
   fonts:
     - family: Prata
       fonts:
-        - asset: fonts/Prata-Regular.ttf
+        - asset: assets/fonts/Prata-Regular.ttf
     - family: Rubik
       fonts:
-        - asset: fonts/Rubik-Regular.ttf
-        - asset: fonts/Rubik-Bold.ttf
+        - asset: assets/fonts/Rubik-Regular.ttf
+        - asset: assets/fonts/Rubik-Bold.ttf
           weight: 700
-        - asset: fonts/Rubik-Light.ttf
+        - asset: assets/fonts/Rubik-Light.ttf
           weight: 200
-        - asset: fonts/Rubik-Medium.ttf
+        - asset: assets/fonts/Rubik-Medium.ttf
           weight: 400

@@ -108,6 +108,12 @@ class _LoginState extends State<Login> {
                       ],
                     ),
                   ),
+                  SizedBox(height: 30),
+                  Image(
+                    image: AssetImage(
+                      'assets/graphics/fingerprint.png',
+                    ),
+                  ),
                 ],
               ),
             ),
