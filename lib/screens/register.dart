@@ -29,9 +29,13 @@ class _RegisterState extends State<Register> {
   void _submitForm() async {
     if (_formKey.currentState.validate()) {
       try {
-        final newUser =
+        final user =
             await Auth.signUp(_emailController.text, _passwordController.text);
-        if (newUser != null) Navigator.pushReplacementNamed(context, Home.id);
+        if (user != null)
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (BuildContext context) => Home(user)),
+          );
       } catch (e) {
         print(e);
       }

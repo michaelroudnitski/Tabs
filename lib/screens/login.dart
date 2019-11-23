@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tabs/services/auth.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 import './home.dart';
@@ -13,8 +13,6 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
-
-  final _auth = FirebaseAuth.instance;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -31,9 +29,13 @@ class _LoginState extends State<Login> {
   void _submitForm() async {
     if (_formKey.currentState.validate()) {
       try {
-        final newUser = await _auth.signInWithEmailAndPassword(
-            email: _emailController.text, password: _passwordController.text);
-        if (newUser != null) Navigator.pushReplacementNamed(context, Home.id);
+        final user =
+            await Auth.signIn(_emailController.text, _passwordController.text);
+        if (user != null)
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (BuildContext context) => Home(user)),
+          );
       } catch (e) {
         print(e);
       }

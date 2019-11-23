@@ -63,7 +63,9 @@ class App extends StatelessWidget {
               print("error");
               return Text(userSnapshot.error.toString());
             }
-            return userSnapshot.hasData ? Home(userSnapshot.data) : Welcome();
+            return userSnapshot.hasData
+                ? Home(userSnapshot.data.uid)
+                : Welcome();
           } else {
             return Text(
               "Tabs",
