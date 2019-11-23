@@ -19,7 +19,15 @@ class Home extends StatelessWidget {
           Container(
             height: 200,
             decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
+              gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                stops: [0.1, 0.6],
+                colors: [
+                  Theme.of(context).primaryColor.withGreen(190),
+                  Theme.of(context).primaryColor,
+                ],
+              ),
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.elliptical(
                     MediaQuery.of(context).size.width * 0.50, 18),

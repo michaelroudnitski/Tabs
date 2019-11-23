@@ -17,7 +17,7 @@ class Welcome extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(32.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   Text(
@@ -33,6 +33,12 @@ class Welcome extends StatelessWidget {
                         .textTheme
                         .body2
                         .copyWith(color: Theme.of(context).primaryColor),
+                  ),
+                  SizedBox(height: 100),
+                  Image(
+                    image: AssetImage(
+                      'assets/graphics/transfer.png',
+                    ),
                   ),
                   Expanded(
                     child: Column(

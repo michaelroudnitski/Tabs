@@ -15,11 +15,18 @@ class TabModal extends StatelessWidget {
         FlutterMoneyFormatter(amount: this.tab["amount"]).output.symbolOnLeft;
     return Container(
       color: Color(0xff757575),
-      height: 400,
       child: Container(
         margin: EdgeInsets.only(left: 18, right: 18),
         decoration: BoxDecoration(
-          color: Colors.white,
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            stops: [0.1, 0.5],
+            colors: [
+              Colors.white,
+              Colors.white.withAlpha(250),
+            ],
+          ),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(18),
             topRight: Radius.circular(18),
@@ -32,7 +39,7 @@ class TabModal extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   Text("${this.tab["name"]}'s Tab",
                       style: Theme.of(context)
@@ -68,27 +75,30 @@ class TabModal extends StatelessWidget {
                       )
                     ],
                   ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  FlatButton(
-                    child: Text("Change Amount"),
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return ChangeAmountDialog(tab: this.tab);
-                          });
-                    },
+                  Image(
+                    image: AssetImage('assets/graphics/money-guy.png'),
                   ),
-                  RaisedButton(
-                    child: Text("Close Tab"),
-                    onPressed: () {
-                      TabsController.closeTab(this.tab.documentID);
-                      Navigator.pop(context);
-                    },
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      FlatButton(
+                        child: Text("Change Amount"),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return ChangeAmountDialog(tab: this.tab);
+                              });
+                        },
+                      ),
+                      RaisedButton(
+                        child: Text("Close Tab"),
+                        onPressed: () {
+                          TabsController.closeTab(this.tab.documentID);
+                          Navigator.pop(context);
+                        },
+                      )
+                    ],
                   )
                 ],
               ),

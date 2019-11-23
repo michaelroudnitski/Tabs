@@ -108,6 +108,12 @@ class _RegisterState extends State<Register> {
                       ],
                     ),
                   ),
+                  SizedBox(height: 30),
+                  Image(
+                    image: AssetImage(
+                      'assets/graphics/welcome.png',
+                    ),
+                  ),
                 ],
               ),
             ),
