@@ -1,11 +1,15 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tabs/controllers/tabsController.dart';
 import 'package:tabs/screens/create.dart';
+import 'package:tabs/services/auth.dart';
 import 'package:tabs/tabsList.dart';
 
 class Home extends StatelessWidget {
   static const String id = "home_screen";
+  final FirebaseUser user;
+  Home(user) : user = user ?? Auth.getCurrentUser();
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +30,7 @@ class Home extends StatelessWidget {
           ),
           SafeArea(
             child: StreamProvider(
-              builder: (context) =>
-                  Firestore.instance.collection("tabs").snapshots(),
+              builder: (context) => TabsController.getUsersTabs(this.user.uid),
               child: TabsList(),
             ),
           ),

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:tabs/controllers/tabsController.dart';
 
 class ChangeAmountDialog extends StatefulWidget {
   final DocumentSnapshot tab;
@@ -47,13 +48,10 @@ class _ChangeAmountDialogState extends State<ChangeAmountDialog> {
                 if (_amountController.text.length > 0) {
                   try {
                     double newAmount = double.parse(_amountController.text);
-                    Firestore.instance
-                        .collection("tabs")
-                        .document(widget.tab.documentID)
-                        .updateData({"amount": newAmount}).then((_) {
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                    });
+                    TabsController.updateAmount(
+                        widget.tab.documentID, newAmount);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
                   } catch (e) {}
                 }
               },

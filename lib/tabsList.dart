@@ -10,7 +10,7 @@ class TabsList extends StatelessWidget {
   String getTotalAmountFormatted(QuerySnapshot tabsData) {
     double total = 0;
     for (DocumentSnapshot tab in tabsData.documents) {
-      total += tab["amount"];
+      if (tab["amount"] != null) total += tab["amount"];
     }
     return FlutterMoneyFormatter(amount: total).output.symbolOnLeft;
   }

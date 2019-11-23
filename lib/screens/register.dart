@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tabs/services/auth.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 import './home.dart';
@@ -13,8 +13,6 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
-
-  final _auth = FirebaseAuth.instance;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -31,8 +29,8 @@ class _RegisterState extends State<Register> {
   void _submitForm() async {
     if (_formKey.currentState.validate()) {
       try {
-        final newUser = await _auth.createUserWithEmailAndPassword(
-            email: _emailController.text, password: _passwordController.text);
+        final newUser =
+            await Auth.signUp(_emailController.text, _passwordController.text);
         if (newUser != null) Navigator.pushReplacementNamed(context, Home.id);
       } catch (e) {
         print(e);
