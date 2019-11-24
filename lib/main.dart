@@ -1,6 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tabs/screens/create.dart';
 import 'package:tabs/screens/home.dart';
+import 'package:tabs/screens/login.dart';
+import 'package:tabs/screens/register.dart';
+import 'package:tabs/screens/welcome.dart';
+import 'package:tabs/services/auth.dart';
 
 void main() => runApp(App());
 
@@ -14,6 +19,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primaryColor: primaryColor,
         accentColor: accentColor,
+        scaffoldBackgroundColor: Colors.white,
         appBarTheme: AppBarTheme(color: Colors.white),
         fontFamily: 'Rubik',
         textTheme: TextTheme(
@@ -35,7 +41,7 @@ class App extends StatelessWidget {
           ),
         ),
         inputDecorationTheme: InputDecorationTheme(
-          contentPadding: EdgeInsets.symmetric(vertical: 8.0),
+          contentPadding: EdgeInsets.all(8),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
@@ -44,11 +50,31 @@ class App extends StatelessWidget {
           ),
         ),
       ),
-      initialRoute: Home.id,
       routes: {
-        Home.id: (context) => Home(),
+        Welcome.id: (context) => Welcome(),
+        Register.id: (context) => Register(),
+        Login.id: (context) => Login(),
         Create.id: (context) => Create(),
       },
+      home: FutureBuilder<FirebaseUser>(
+        future: Auth.getCurrentUser(),
+        builder: (context, AsyncSnapshot<FirebaseUser> userSnapshot) {
+          if (userSnapshot.connectionState == ConnectionState.done) {
+            if (userSnapshot.error != null) {
+              print("error");
+              return Text(userSnapshot.error.toString());
+            }
+            return userSnapshot.hasData
+                ? Home(userSnapshot.data.uid)
+                : Welcome();
+          } else {
+            return Text(
+              "Tabs",
+              style: Theme.of(context).textTheme.display1,
+            );
+          }
+        },
+      ),
     );
   }
 }

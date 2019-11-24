@@ -1,5 +1,5 @@
 name: tabs
-description: A Flutter app made to manage debts with friends.
+description: The expense sharing app.
 
 version: 0.0.1+1
 
@@ -11,7 +11,7 @@ dependencies:
     sdk: flutter
   cupertino_icons:
   firebase_core:
-  # firebase_auth:
+  firebase_auth:
   cloud_firestore:
   provider:
   permission_handler:
@@ -21,6 +21,7 @@ dependencies:
   timeago:
   flutter_spinkit:
   flutter_staggered_animations:
+  wave:
 
 dev_dependencies:
   flutter_test:
@@ -29,16 +30,18 @@ dev_dependencies:
 # The following section is specific to Flutter.
 flutter:
   uses-material-design: true
+  assets:
+    - assets/graphics/
   fonts:
     - family: Prata
       fonts:
-        - asset: fonts/Prata-Regular.ttf
+        - asset: assets/fonts/Prata-Regular.ttf
     - family: Rubik
       fonts:
-        - asset: fonts/Rubik-Regular.ttf
-        - asset: fonts/Rubik-Bold.ttf
+        - asset: assets/fonts/Rubik-Regular.ttf
+        - asset: assets/fonts/Rubik-Bold.ttf
           weight: 700
-        - asset: fonts/Rubik-Light.ttf
+        - asset: assets/fonts/Rubik-Light.ttf
           weight: 200
-        - asset: fonts/Rubik-Medium.ttf
+        - asset: assets/fonts/Rubik-Medium.ttf
           weight: 400

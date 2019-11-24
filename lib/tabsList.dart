@@ -10,7 +10,7 @@ class TabsList extends StatelessWidget {
   String getTotalAmountFormatted(QuerySnapshot tabsData) {
     double total = 0;
     for (DocumentSnapshot tab in tabsData.documents) {
-      total += tab["amount"];
+      if (tab["amount"] != null) total += tab["amount"];
     }
     return FlutterMoneyFormatter(amount: total).output.symbolOnLeft;
   }
@@ -102,7 +102,14 @@ class TabsList extends StatelessWidget {
                 height: 100,
               ),
               Center(
-                child: Text("NO OPEN TABS"),
+                child: Column(
+                  children: <Widget>[
+                    Image(
+                      image: AssetImage('assets/graphics/not-found.png'),
+                    ),
+                    Text("You don't have any open tabs")
+                  ],
+                ),
               ),
             ],
           );
