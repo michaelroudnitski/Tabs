@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:tabs/services/auth.dart';
-import 'package:wave/config.dart';
-import 'package:wave/wave.dart';
 import './home.dart';
 
 class Register extends StatefulWidget {
@@ -71,7 +69,8 @@ class _RegisterState extends State<Register> {
               children: <Widget>[
                 SafeArea(
                   child: Padding(
-                    padding: const EdgeInsets.all(32.0),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,23 +135,6 @@ class _RegisterState extends State<Register> {
                           ),
                         ),
                       ],
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 0,
-                  child: WaveWidget(
-                    config: CustomConfig(
-                      colors: [Colors.teal, Theme.of(context).primaryColor],
-                      durations: [30000, 50000],
-                      heightPercentages: [0.5, 0.35],
-                    ),
-                    waveAmplitude: 5,
-                    wavePhase: 45,
-                    waveFrequency: 80,
-                    size: Size(
-                      MediaQuery.of(context).size.width * 100,
-                      20,
                     ),
                   ),
                 ),

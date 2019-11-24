@@ -21,7 +21,6 @@ dependencies:
   timeago:
   flutter_spinkit:
   flutter_staggered_animations:
-  wave:
 
 dev_dependencies:
   flutter_test:
@@ -33,9 +32,6 @@ flutter:
   assets:
     - assets/graphics/
   fonts:
-    - family: Prata
-      fonts:
-        - asset: assets/fonts/Prata-Regular.ttf
     - family: Rubik
       fonts:
         - asset: assets/fonts/Rubik-Regular.ttf
