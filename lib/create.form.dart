@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:tabs/controllers/tabsController.dart';
 import 'package:tabs/services/contacts.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
@@ -18,12 +18,11 @@ class _CreateFormState extends State<CreateForm> {
   double _formProgress = 0.15;
 
   void _submitTab() {
-    Firestore.instance.collection("tabs").add({
-      "name": _nameController.text,
-      "amount": double.parse(_amountController.text),
-      "description": _descriptionController.text,
-      "time": DateTime.now(),
-    });
+    TabsController.createTab(
+      name: _nameController.text,
+      amount: double.parse(_amountController.text),
+      description: _descriptionController.text,
+    );
     Navigator.pop(context);
   }
 
