@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:tabs/services/auth.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
@@ -15,6 +16,8 @@ class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool loading = false;
+  String errorMessage = "";
 
   String validateEmail(String value) {
     Pattern pattern =
@@ -27,17 +30,25 @@ class _RegisterState extends State<Register> {
   }
 
   void _submitForm() async {
+    errorMessage = "";
     if (_formKey.currentState.validate()) {
       try {
+        setState(() {
+          loading = true;
+        });
         final user =
             await Auth.signUp(_emailController.text, _passwordController.text);
         if (user != null)
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (BuildContext context) => Home(user)),
-          );
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => Home(user)),
+              ModalRoute.withName("/"));
       } catch (e) {
         print(e);
+        setState(() {
+          loading = false;
+          errorMessage = e.message;
+        });
       }
     }
   }
@@ -48,95 +59,105 @@ class _RegisterState extends State<Register> {
       appBar: AppBar(
         elevation: 0,
       ),
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(32.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "Create Account",
-                    style: Theme.of(context)
-                        .textTheme
-                        .display1
-                        .copyWith(color: Theme.of(context).primaryColor),
-                  ),
-                  SizedBox(height: 36),
-                  Form(
-                    key: _formKey,
+      body: loading
+          ? Center(
+              child: SpinKitDoubleBounce(
+                color: Theme.of(context).primaryColor,
+                size: 50.0,
+              ),
+            )
+          : Stack(
+              fit: StackFit.expand,
+              children: <Widget>[
+                SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(32.0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        TextFormField(
-                          keyboardType: TextInputType.emailAddress,
-                          textInputAction: TextInputAction.next,
-                          controller: _emailController,
-                          validator: (value) => validateEmail(value),
-                          onFieldSubmitted: (v) {
-                            FocusScope.of(context).nextFocus();
-                          },
-                          decoration: InputDecoration(
-                            labelText: "Email",
-                            prefixIcon: Icon(Icons.email),
+                        Text(
+                          "Create Account",
+                          style: Theme.of(context)
+                              .textTheme
+                              .display1
+                              .copyWith(color: Theme.of(context).primaryColor),
+                        ),
+                        SizedBox(height: 36),
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              TextFormField(
+                                keyboardType: TextInputType.emailAddress,
+                                textInputAction: TextInputAction.next,
+                                controller: _emailController,
+                                validator: (value) => validateEmail(value),
+                                onFieldSubmitted: (v) {
+                                  FocusScope.of(context).nextFocus();
+                                },
+                                decoration: InputDecoration(
+                                  labelText: "Email",
+                                  prefixIcon: Icon(Icons.email),
+                                ),
+                              ),
+                              SizedBox(height: 12),
+                              TextFormField(
+                                keyboardType: TextInputType.text,
+                                controller: _passwordController,
+                                validator: (value) {
+                                  if (value.length < 8)
+                                    return "Password must be at least 8 characters";
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  labelText: "Password",
+                                  prefixIcon: Icon(Icons.lock),
+                                ),
+                                obscureText: true,
+                              ),
+                              SizedBox(height: 12),
+                              Text(errorMessage,
+                                  style: TextStyle(color: Colors.red)),
+                              SizedBox(height: 12),
+                              RaisedButton(
+                                padding: EdgeInsets.all(14),
+                                child: Text("Sign Up"),
+                                onPressed: _submitForm,
+                              ),
+                            ],
                           ),
                         ),
-                        SizedBox(height: 12),
-                        TextFormField(
-                          keyboardType: TextInputType.text,
-                          controller: _passwordController,
-                          validator: (value) {
-                            if (value.length < 8)
-                              return "Password must be at least 8 characters";
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            labelText: "Password",
-                            prefixIcon: Icon(Icons.lock),
+                        SizedBox(height: 30),
+                        Image(
+                          image: AssetImage(
+                            'assets/graphics/welcome.png',
                           ),
-                          obscureText: true,
-                        ),
-                        SizedBox(height: 24),
-                        RaisedButton(
-                          padding: EdgeInsets.all(14),
-                          child: Text("Sign Up"),
-                          onPressed: _submitForm,
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 30),
-                  Image(
-                    image: AssetImage(
-                      'assets/graphics/welcome.png',
+                ),
+                Positioned(
+                  bottom: 0,
+                  child: WaveWidget(
+                    config: CustomConfig(
+                      colors: [Colors.teal, Theme.of(context).primaryColor],
+                      durations: [30000, 50000],
+                      heightPercentages: [0.5, 0.35],
+                    ),
+                    waveAmplitude: 5,
+                    wavePhase: 45,
+                    waveFrequency: 80,
+                    size: Size(
+                      MediaQuery.of(context).size.width * 100,
+                      20,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ),
-          Positioned(
-            bottom: 0,
-            child: WaveWidget(
-              config: CustomConfig(
-                colors: [Colors.teal, Theme.of(context).primaryColor],
-                durations: [30000, 50000],
-                heightPercentages: [0.5, 0.35],
-              ),
-              waveAmplitude: 5,
-              wavePhase: 45,
-              waveFrequency: 80,
-              size: Size(
-                MediaQuery.of(context).size.width * 100,
-                20,
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
