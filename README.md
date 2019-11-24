@@ -1,2 +1,2 @@
 # Tabs
-A Flutter app made to manage debts with friends
+The expense sharing app.
