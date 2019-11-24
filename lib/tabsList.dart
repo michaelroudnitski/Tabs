@@ -102,7 +102,14 @@ class TabsList extends StatelessWidget {
                 height: 100,
               ),
               Center(
-                child: Text("NO OPEN TABS"),
+                child: Column(
+                  children: <Widget>[
+                    Image(
+                      image: AssetImage('assets/graphics/not-found.png'),
+                    ),
+                    Text("You don't have any open tabs")
+                  ],
+                ),
               ),
             ],
           );
