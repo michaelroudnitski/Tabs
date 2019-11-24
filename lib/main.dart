@@ -24,11 +24,9 @@ class App extends StatelessWidget {
         fontFamily: 'Rubik',
         textTheme: TextTheme(
           display1: TextStyle(
-              fontFamily: 'Prata',
               color: Colors.black87,
               fontWeight: FontWeight.bold),
           display2: TextStyle(
-            fontFamily: 'Rubik',
             color: Colors.white,
             fontWeight: FontWeight.w700,
           ),

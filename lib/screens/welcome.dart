@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tabs/screens/login.dart';
-import 'package:wave/config.dart';
-import 'package:wave/wave.dart';
 import './register.dart';
 
 class Welcome extends StatelessWidget {
@@ -62,23 +60,6 @@ class Welcome extends StatelessWidget {
                     ),
                   )
                 ],
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            child: WaveWidget(
-              config: CustomConfig(
-                colors: [Colors.teal, Theme.of(context).primaryColor],
-                durations: [30000, 50000],
-                heightPercentages: [0.5, 0.35],
-              ),
-              waveAmplitude: 5,
-              wavePhase: 45,
-              waveFrequency: 80,
-              size: Size(
-                MediaQuery.of(context).size.width * 100,
-                20,
               ),
             ),
           ),
