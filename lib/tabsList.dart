@@ -6,14 +6,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:tabs/widgets/tabsGrid.dart';
 
 class TabsList extends StatelessWidget {
-  String getTotalAmountFormatted(QuerySnapshot tabsData) {
-    double total = 0;
-    for (DocumentSnapshot tab in tabsData.documents) {
-      if (tab["amount"] != null) total += tab["amount"];
-    }
-    return FlutterMoneyFormatter(amount: total).output.symbolOnLeft;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Consumer<QuerySnapshot>(
@@ -28,52 +20,14 @@ class TabsList extends StatelessWidget {
         else if (tabsData.documents.length > 0)
           return Column(
             children: <Widget>[
-              Container(
-                height: 120,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    Text(
-                      "${tabsData.documents.length} OPEN TABS",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500, color: Colors.white),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(getTotalAmountFormatted(tabsData),
-                        style: Theme.of(context).textTheme.display2)
-                  ],
-                ),
-              ),
+              TabsInfoHeader(tabsData),
               Expanded(child: TabsGrid()),
             ],
           );
         else
           return Column(
             children: <Widget>[
-              Container(
-                height: 120,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    Text(
-                      "${tabsData.documents.length} OPEN TABS",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500, color: Colors.white),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(getTotalAmountFormatted(tabsData),
-                        style: Theme.of(context).textTheme.display2)
-                  ],
-                ),
-              ),
+              TabsInfoHeader(tabsData),
               SizedBox(
                 height: 100,
               ),
@@ -90,6 +44,43 @@ class TabsList extends StatelessWidget {
             ],
           );
       },
+    );
+  }
+}
+
+class TabsInfoHeader extends StatelessWidget {
+  final QuerySnapshot tabsData;
+
+  TabsInfoHeader(this.tabsData);
+
+  String getTotalAmountFormatted() {
+    double total = 0;
+    for (DocumentSnapshot tab in tabsData.documents) {
+      if (tab["amount"] != null) total += tab["amount"];
+    }
+    return FlutterMoneyFormatter(amount: total).output.symbolOnLeft;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 120,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          Text(
+            "${tabsData.documents.length} OPEN TABS",
+            style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(getTotalAmountFormatted(),
+              style: Theme.of(context).textTheme.display2)
+        ],
+      ),
     );
   }
 }
