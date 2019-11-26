@@ -1,4 +1,4 @@
-package com.example.tabs
+package com.mroudnitski.tabs
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
