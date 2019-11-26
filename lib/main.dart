@@ -23,9 +23,8 @@ class App extends StatelessWidget {
         appBarTheme: AppBarTheme(color: Colors.white),
         fontFamily: 'Rubik',
         textTheme: TextTheme(
-          display1: TextStyle(
-              color: Colors.black87,
-              fontWeight: FontWeight.bold),
+          display1:
+              TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
           display2: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w700,
