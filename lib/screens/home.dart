@@ -4,7 +4,7 @@ import 'package:tabs/controllers/tabsController.dart';
 import 'package:tabs/screens/create.dart';
 import 'package:tabs/screens/welcome.dart';
 import 'package:tabs/services/auth.dart';
-import 'package:tabs/tabsList.dart';
+import 'package:tabs/tabsContainer.dart';
 
 class Home extends StatelessWidget {
   static const String id = "home_screen";
@@ -51,7 +51,7 @@ class Home extends StatelessWidget {
           SafeArea(
             child: StreamProvider(
               builder: (context) => TabsController.getUsersTabs(this.uid),
-              child: TabsList(),
+              child: TabsContainer(),
             ),
           ),
         ],

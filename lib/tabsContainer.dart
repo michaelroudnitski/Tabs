@@ -5,7 +5,7 @@ import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:tabs/widgets/tabsGrid.dart';
 
-class TabsList extends StatelessWidget {
+class TabsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<QuerySnapshot>(
