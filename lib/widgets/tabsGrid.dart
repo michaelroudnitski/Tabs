@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tabs/controllers/tabsController.dart';
 import 'package:tabs/providers/filterState.dart';
 import 'package:tabs/widgets/tabCard.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -18,6 +19,8 @@ class TabsGrid extends StatelessWidget {
             .toList();
       else
         tabs = tabsData.documents;
+      /* filter tabs by closed status */
+      tabs = TabsController.filterOpenTabs(tabs);
       tabs.sort((a, b) => a["time"].toDate().compareTo(b["time"].toDate()));
 
       return Column(

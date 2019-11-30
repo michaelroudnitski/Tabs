@@ -5,14 +5,14 @@ import 'package:tabs/providers/filterState.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 
 class TabsInfoHeader extends StatelessWidget {
-  final Iterable<DocumentSnapshot> tabsData;
+  final List<DocumentSnapshot> openTabs;
 
-  TabsInfoHeader(this.tabsData);
+  TabsInfoHeader(this.openTabs);
 
   String getTotalAmountFormatted(List<DocumentSnapshot> tabs) {
     double total = 0;
     for (DocumentSnapshot tab in tabs) {
-      if (tab["amount"] != null) total += tab["amount"];
+      if (tab["closed"] != true) total += tab["amount"];
     }
     return FlutterMoneyFormatter(amount: total).output.symbolOnLeft;
   }
@@ -36,12 +36,12 @@ class TabsInfoHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     List<DocumentSnapshot> tabs;
     if (Provider.of<FilterState>(context).filterEnabled)
-      tabs = tabsData
+      tabs = openTabs
           .where((doc) =>
               doc["name"] == Provider.of<FilterState>(context).nameFilter)
           .toList();
     else
-      tabs = tabsData;
+      tabs = openTabs;
 
     return Container(
       height:
