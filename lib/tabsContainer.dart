@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:tabs/providers/filterState.dart';
 import 'package:tabs/widgets/tabsGrid.dart';
 
 class TabsContainer extends StatelessWidget {
@@ -18,17 +19,23 @@ class TabsContainer extends StatelessWidget {
             ),
           );
         else if (tabsData.documents.length > 0)
-          return Column(
-            children: <Widget>[
-              TabsInfoHeader(tabsData),
-              Expanded(
-                  child: PageView(children: <Widget>[TabsGrid(), Container()])),
-            ],
+          return ChangeNotifierProvider<FilterState>(
+            builder: (context) => FilterState(),
+            child: Column(
+              children: <Widget>[
+                TabsInfoHeader(
+                  tabsData.documents,
+                ),
+                Expanded(
+                    child:
+                        PageView(children: <Widget>[TabsGrid(), Container()])),
+              ],
+            ),
           );
         else
           return Column(
             children: <Widget>[
-              TabsInfoHeader(tabsData),
+              TabsInfoHeader(tabsData.documents),
               SizedBox(
                 height: 100,
               ),
@@ -50,26 +57,34 @@ class TabsContainer extends StatelessWidget {
 }
 
 class TabsInfoHeader extends StatelessWidget {
-  final QuerySnapshot tabsData;
+  final Iterable<DocumentSnapshot> tabsData;
 
   TabsInfoHeader(this.tabsData);
 
-  String getTotalAmountFormatted() {
+  String getTotalAmountFormatted(List<DocumentSnapshot> tabs) {
     double total = 0;
-    for (DocumentSnapshot tab in tabsData.documents) {
+    for (DocumentSnapshot tab in tabs) {
       if (tab["amount"] != null) total += tab["amount"];
     }
     return FlutterMoneyFormatter(amount: total).output.symbolOnLeft;
   }
 
-  String getHeaderText() {
-    String text = "${tabsData.documents.length} OPEN TAB";
-    if (tabsData.documents.length != 1) return text + "S";
+  String getHeaderText(List<DocumentSnapshot> tabs) {
+    String text = "${tabs.length} OPEN TAB";
+    if (tabs.length != 1) text += "S";
     return text;
   }
 
   @override
   Widget build(BuildContext context) {
+    List<DocumentSnapshot> tabs;
+    if (Provider.of<FilterState>(context).filterEnabled)
+      tabs = tabsData
+          .where((doc) =>
+              doc["name"] == Provider.of<FilterState>(context).nameFilter)
+          .toList();
+    else
+      tabs = tabsData;
     return Container(
       height: 120,
       child: Column(
@@ -78,14 +93,14 @@ class TabsInfoHeader extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Text(
-            getHeaderText(),
+            getHeaderText(tabs),
             style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
           ),
           SizedBox(
             height: 10,
           ),
-          Text(getTotalAmountFormatted(),
-              style: Theme.of(context).textTheme.display2)
+          Text(getTotalAmountFormatted(tabs),
+              style: Theme.of(context).textTheme.display2),
         ],
       ),
     );
