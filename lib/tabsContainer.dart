@@ -21,7 +21,8 @@ class TabsContainer extends StatelessWidget {
           return Column(
             children: <Widget>[
               TabsInfoHeader(tabsData),
-              Expanded(child: TabsGrid()),
+              Expanded(
+                  child: PageView(children: <Widget>[TabsGrid(), Container()])),
             ],
           );
         else

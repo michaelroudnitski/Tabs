@@ -15,15 +15,16 @@ class TabCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(18),
       ),
       child: InkWell(
+        borderRadius: BorderRadius.circular(18),
         onTap: () {
           showModalBottomSheet(
             context: context,
+            backgroundColor: Colors.transparent,
             builder: (context) => TabModal(
               tab: this.tab,
             ),
           );
         },
-        splashColor: Theme.of(context).primaryColor,
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
