@@ -62,6 +62,12 @@ class TabsInfoHeader extends StatelessWidget {
     return FlutterMoneyFormatter(amount: total).output.symbolOnLeft;
   }
 
+  String getHeaderText() {
+    String text = "${tabsData.documents.length} OPEN TAB";
+    if (tabsData.documents.length != 1) return text + "S";
+    return text;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -72,7 +78,7 @@ class TabsInfoHeader extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Text(
-            "${tabsData.documents.length} OPEN TABS",
+            getHeaderText(),
             style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
           ),
           SizedBox(
