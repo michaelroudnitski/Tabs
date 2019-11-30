@@ -18,7 +18,7 @@ class Home extends StatelessWidget {
       body: Stack(
         children: <Widget>[
           Container(
-            height: 250,
+            height: 225,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topRight,
