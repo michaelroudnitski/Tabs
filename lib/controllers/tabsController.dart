@@ -11,6 +11,7 @@ abstract class TabsController {
       "amount": amount,
       "description": description,
       "time": DateTime.now(),
+      "closed": false,
       "uid": user.uid
     });
   }
@@ -30,6 +31,13 @@ abstract class TabsController {
   }
 
   static Future closeTab(String tabId) {
+    return Firestore.instance
+        .collection("tabs")
+        .document(tabId)
+        .updateData({"closed": false});
+  }
+
+  static Future deleteTab(String tabId) {
     return Firestore.instance.collection("tabs").document(tabId).delete();
   }
 }
