@@ -18,7 +18,7 @@ class TabsContainer extends StatelessWidget {
               size: 50.0,
             ),
           );
-        else if (tabsData.documents.length > 0)
+        else
           return ChangeNotifierProvider<FilterState>(
             builder: (context) => FilterState(),
             child: Column(
@@ -26,30 +26,28 @@ class TabsContainer extends StatelessWidget {
                 TabsInfoHeader(
                   tabsData.documents,
                 ),
-                Expanded(
-                    child:
-                        PageView(children: <Widget>[TabsGrid(), Container()])),
+                if (tabsData.documents.length > 0)
+                  Expanded(
+                    child: PageView(
+                      children: <Widget>[TabsGrid(), Container()],
+                    ),
+                  ),
+                if (tabsData.documents.length == 0)
+                  Center(
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(
+                          height: 100,
+                        ),
+                        Image(
+                          image: AssetImage('assets/graphics/not-found.png'),
+                        ),
+                        Text("You don't have any open tabs")
+                      ],
+                    ),
+                  ),
               ],
             ),
-          );
-        else
-          return Column(
-            children: <Widget>[
-              TabsInfoHeader(tabsData.documents),
-              SizedBox(
-                height: 100,
-              ),
-              Center(
-                child: Column(
-                  children: <Widget>[
-                    Image(
-                      image: AssetImage('assets/graphics/not-found.png'),
-                    ),
-                    Text("You don't have any open tabs")
-                  ],
-                ),
-              ),
-            ],
           );
       },
     );
@@ -75,6 +73,15 @@ class TabsInfoHeader extends StatelessWidget {
     return text;
   }
 
+  Widget displayFilterChip(String name, Function onDeleted) {
+    return Chip(
+      backgroundColor: Colors.white70,
+      label: Text("$name's tabs"),
+      onDeleted: onDeleted,
+      deleteIcon: Icon(Icons.clear),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     List<DocumentSnapshot> tabs;
@@ -86,10 +93,15 @@ class TabsInfoHeader extends StatelessWidget {
     else
       tabs = tabsData;
     return Container(
-      height: 120,
+      height:
+          Provider.of<FilterState>(context).filterEnabled || tabs.length == 0
+              ? 150
+              : 100,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: tabs.length > 0
+            ? MainAxisAlignment.start
+            : MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Text(
@@ -101,6 +113,14 @@ class TabsInfoHeader extends StatelessWidget {
           ),
           Text(getTotalAmountFormatted(tabs),
               style: Theme.of(context).textTheme.display2),
+          SizedBox(
+            height: 10,
+          ),
+          if (Provider.of<FilterState>(context).filterEnabled)
+            displayFilterChip(
+              Provider.of<FilterState>(context).nameFilter,
+              Provider.of<FilterState>(context).removeFilter,
+            ),
         ],
       ),
     );

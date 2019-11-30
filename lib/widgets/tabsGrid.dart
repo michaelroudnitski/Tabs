@@ -6,15 +6,6 @@ import 'package:tabs/widgets/tabCard.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class TabsGrid extends StatelessWidget {
-  Widget displayFilterChip(String name, Function onDeleted) {
-    return Chip(
-      backgroundColor: Colors.white70,
-      label: Text("$name's tabs"),
-      onDeleted: onDeleted,
-      deleteIcon: Icon(Icons.clear),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     List<DocumentSnapshot> tabs;
@@ -31,11 +22,6 @@ class TabsGrid extends StatelessWidget {
 
       return Column(
         children: <Widget>[
-          if (Provider.of<FilterState>(context).filterEnabled)
-            displayFilterChip(
-              Provider.of<FilterState>(context).nameFilter,
-              Provider.of<FilterState>(context).removeFilter,
-            ),
           AnimationLimiter(
             child: Expanded(
               child: GridView.builder(
