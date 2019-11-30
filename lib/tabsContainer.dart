@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:tabs/controllers/tabsController.dart';
 import 'package:tabs/providers/filterState.dart';
 import 'package:tabs/widgets/tabsGrid.dart';
 import 'package:tabs/widgets/tabsInfoHeader.dart';
@@ -24,7 +25,7 @@ class TabsContainer extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 TabsInfoHeader(
-                  tabsData.documents,
+                  TabsController.filterOpenTabs(tabsData.documents),
                 ),
                 if (tabsData.documents.length > 0)
                   Expanded(

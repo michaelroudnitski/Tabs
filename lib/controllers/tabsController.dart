@@ -34,10 +34,15 @@ abstract class TabsController {
     return Firestore.instance
         .collection("tabs")
         .document(tabId)
-        .updateData({"closed": false});
+        .updateData({"closed": true});
   }
 
   static Future deleteTab(String tabId) {
     return Firestore.instance.collection("tabs").document(tabId).delete();
+  }
+
+  static List<DocumentSnapshot> filterOpenTabs(
+      Iterable<DocumentSnapshot> tabs) {
+    return tabs.where((tab) => tab["closed"] != true).toList();
   }
 }
