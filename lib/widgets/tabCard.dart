@@ -49,7 +49,9 @@ class TabCard extends StatelessWidget {
                     .copyWith(fontWeight: FontWeight.bold),
               ),
               Chip(
-                backgroundColor: Theme.of(context).primaryColor.withAlpha(30),
+                backgroundColor: this.tab["closed"] == true
+                    ? Theme.of(context).accentColor.withAlpha(30)
+                    : Theme.of(context).primaryColor.withAlpha(30),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(8),
@@ -57,16 +59,29 @@ class TabCard extends StatelessWidget {
                 ),
                 label: Text(
                   this.tab["description"],
-                  style: TextStyle(color: Theme.of(context).primaryColor),
+                  style: TextStyle(
+                      color: this.tab["closed"] == true
+                          ? Theme.of(context).accentColor
+                          : Theme.of(context).primaryColor),
                 ),
               ),
               Expanded(
-                child: Align(
-                  child: Text(
-                    timeago.format(this.tab["time"].toDate()),
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                  alignment: Alignment.bottomLeft,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    if (this.tab["closed"] == true)
+                      Text(
+                        "Closed",
+                        style: Theme.of(context).textTheme.body1,
+                      ),
+                    Text(
+                      timeago.format(this.tab["closed"] == true
+                          ? this.tab["timeClosed"].toDate()
+                          : this.tab["time"].toDate()),
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                  ],
                 ),
               )
             ],

@@ -24,11 +24,14 @@ class TabsInfoHeader extends StatelessWidget {
   }
 
   Widget displayFilterChip(String name, Function onDeleted) {
-    return Chip(
-      backgroundColor: Colors.white70,
-      label: Text("$name's tabs"),
-      onDeleted: onDeleted,
-      deleteIcon: Icon(Icons.clear),
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 250),
+      child: Chip(
+        backgroundColor: Colors.white70,
+        label: Text("$name's tabs"),
+        onDeleted: onDeleted,
+        deleteIcon: Icon(Icons.clear),
+      ),
     );
   }
 

@@ -81,19 +81,28 @@ class TabModal extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     FlatButton(
-                      child: Text("Change Amount"),
+                      child: Text(this.tab["closed"] == true
+                          ? "Reopen Tab"
+                          : "Change Amount"),
                       onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return ChangeAmountDialog(tab: this.tab);
-                            });
+                        if (this.tab["closed"] == true) {
+                          TabsController.reopenTab(this.tab.documentID);
+                          Navigator.pop(context);
+                        } else
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return ChangeAmountDialog(tab: this.tab);
+                              });
                       },
                     ),
                     RaisedButton(
-                      child: Text("Mark Paid"),
+                      child: Text(
+                          this.tab["closed"] == true ? "Delete" : "Close Tab"),
                       onPressed: () {
-                        TabsController.closeTab(this.tab.documentID);
+                        this.tab["closed"] == true
+                            ? TabsController.deleteTab(this.tab.documentID)
+                            : TabsController.closeTab(this.tab.documentID);
                         Navigator.pop(context);
                       },
                     )
