@@ -11,6 +11,7 @@ abstract class TabsController {
       "amount": amount,
       "description": description,
       "time": DateTime.now(),
+      "closed": false,
       "uid": user.uid
     });
   }
@@ -30,6 +31,30 @@ abstract class TabsController {
   }
 
   static Future closeTab(String tabId) {
+    return Firestore.instance
+        .collection("tabs")
+        .document(tabId)
+        .updateData({"closed": true, "timeClosed": DateTime.now()});
+  }
+
+  static Future reopenTab(String tabId) {
+    return Firestore.instance
+        .collection("tabs")
+        .document(tabId)
+        .updateData({"closed": false, "timeClosed": null});
+  }
+
+  static Future deleteTab(String tabId) {
     return Firestore.instance.collection("tabs").document(tabId).delete();
+  }
+
+  static List<DocumentSnapshot> filterOpenTabs(
+      Iterable<DocumentSnapshot> tabs) {
+    return tabs.where((tab) => tab["closed"] != true).toList();
+  }
+
+  static List<DocumentSnapshot> filterClosedTabs(
+      Iterable<DocumentSnapshot> tabs) {
+    return tabs.where((tab) => tab["closed"] == true).toList();
   }
 }

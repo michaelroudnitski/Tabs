@@ -39,8 +39,10 @@ class App extends StatelessWidget {
         ),
         inputDecorationTheme: InputDecorationTheme(
           contentPadding: EdgeInsets.all(8),
+          filled: true,
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
+            borderSide: BorderSide(style: BorderStyle.none),
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),

@@ -14,96 +14,103 @@ class TabModal extends StatelessWidget {
     String displayAmount =
         FlutterMoneyFormatter(amount: this.tab["amount"]).output.symbolOnLeft;
     return Container(
-      color: Color(0xff757575),
-      child: Container(
-        margin: EdgeInsets.only(left: 18, right: 18),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            stops: [0.1, 0.5],
-            colors: [
-              Colors.white,
-              Colors.white.withAlpha(250),
-            ],
-          ),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(18),
-            topRight: Radius.circular(18),
-          ),
+      margin: EdgeInsets.only(left: 18, right: 18),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          stops: [0.1, 0.5],
+          colors: [
+            Colors.white,
+            Colors.white.withAlpha(250),
+          ],
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(26.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Text("${this.tab["name"]}'s Tab",
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline
-                          .copyWith(fontWeight: FontWeight.bold)),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "Description",
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                        Text(
-                          "Amount",
-                          style: Theme.of(context).textTheme.caption,
-                        )
-                      ],
-                    ),
-                  ),
-                  Row(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(18),
+          topRight: Radius.circular(18),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(26.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Text("${this.tab["name"]}'s Tab",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline
+                        .copyWith(fontWeight: FontWeight.bold)),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        "${this.tab["description"]}",
-                        style: Theme.of(context).textTheme.subtitle,
+                        "Description",
+                        style: Theme.of(context).textTheme.caption,
                       ),
                       Text(
-                        "$displayAmount",
-                        style: Theme.of(context).textTheme.subtitle,
+                        "Amount",
+                        style: Theme.of(context).textTheme.caption,
                       )
                     ],
                   ),
-                  Image(
-                    image: AssetImage('assets/graphics/money-guy.png'),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      FlatButton(
-                        child: Text("Change Amount"),
-                        onPressed: () {
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "${this.tab["description"]}",
+                      style: Theme.of(context).textTheme.subtitle,
+                    ),
+                    Text(
+                      "$displayAmount",
+                      style: Theme.of(context).textTheme.subtitle,
+                    )
+                  ],
+                ),
+                Image(
+                  image: AssetImage('assets/graphics/money-guy.png'),
+                  fit: BoxFit.scaleDown,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    FlatButton(
+                      child: Text(this.tab["closed"] == true
+                          ? "Reopen Tab"
+                          : "Change Amount"),
+                      onPressed: () {
+                        if (this.tab["closed"] == true) {
+                          TabsController.reopenTab(this.tab.documentID);
+                          Navigator.pop(context);
+                        } else
                           showDialog(
                               context: context,
                               builder: (context) {
                                 return ChangeAmountDialog(tab: this.tab);
                               });
-                        },
-                      ),
-                      RaisedButton(
-                        child: Text("Close Tab"),
-                        onPressed: () {
-                          TabsController.closeTab(this.tab.documentID);
-                          Navigator.pop(context);
-                        },
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ],
-          ),
+                      },
+                    ),
+                    RaisedButton(
+                      child: Text(
+                          this.tab["closed"] == true ? "Delete" : "Close Tab"),
+                      onPressed: () {
+                        this.tab["closed"] == true
+                            ? TabsController.deleteTab(this.tab.documentID)
+                            : TabsController.closeTab(this.tab.documentID);
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                )
+              ],
+            ),
+          ],
         ),
       ),
     );
