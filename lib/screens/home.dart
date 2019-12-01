@@ -14,10 +14,11 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xfffefefe),
       body: Stack(
         children: <Widget>[
           Container(
-            height: 200,
+            height: 225,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topRight,
@@ -37,7 +38,7 @@ class Home extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 25,
+            top: 30,
             right: 5,
             child: IconButton(
               color: Theme.of(context).accentColor,

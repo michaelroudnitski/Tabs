@@ -1,11 +1,32 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:tabs/controllers/tabsController.dart';
+import 'package:tabs/providers/filterState.dart';
 import 'package:tabs/widgets/tabsGrid.dart';
+import 'package:tabs/widgets/tabsInfoHeader.dart';
 
-class TabsContainer extends StatelessWidget {
+class TabsContainer extends StatefulWidget {
+  @override
+  _TabsContainerState createState() => _TabsContainerState();
+}
+
+class _TabsContainerState extends State<TabsContainer> {
+  int currentPageIndex = 0;
+
+  Widget circleBar(bool isActive) {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 250),
+      margin: EdgeInsets.only(left: 8, right: 8, bottom: 8),
+      height: 12,
+      width: isActive ? 24 : 12,
+      decoration: BoxDecoration(
+          color: isActive ? Colors.white : Colors.green,
+          borderRadius: BorderRadius.all(Radius.circular(12))),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<QuerySnapshot>(
@@ -17,70 +38,45 @@ class TabsContainer extends StatelessWidget {
               size: 50.0,
             ),
           );
-        else if (tabsData.documents.length > 0)
-          return Column(
-            children: <Widget>[
-              TabsInfoHeader(tabsData),
-              Expanded(child: TabsGrid()),
-            ],
-          );
         else
-          return Column(
-            children: <Widget>[
-              TabsInfoHeader(tabsData),
-              SizedBox(
-                height: 100,
-              ),
-              Center(
-                child: Column(
+          return ChangeNotifierProvider<FilterState>(
+            builder: (context) => FilterState(),
+            child: Column(
+              children: <Widget>[
+                TabsInfoHeader(
+                  TabsController.filterOpenTabs(tabsData.documents),
+                ),
+                Stack(
+                  alignment: AlignmentDirectional.topStart,
                   children: <Widget>[
-                    Image(
-                      image: AssetImage('assets/graphics/not-found.png'),
+                    Container(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          for (int i = 0; i < 2; i++)
+                            if (i == currentPageIndex) ...[circleBar(true)] else
+                              circleBar(false),
+                        ],
+                      ),
                     ),
-                    Text("You don't have any open tabs")
                   ],
                 ),
-              ),
-            ],
+                Expanded(
+                  child: PageView(
+                    onPageChanged: (int page) {
+                      setState(() {
+                        currentPageIndex = page;
+                      });
+                    },
+                    physics: ClampingScrollPhysics(),
+                    children: <Widget>[TabsGrid(true), TabsGrid(false)],
+                  ),
+                ),
+              ],
+            ),
           );
       },
-    );
-  }
-}
-
-class TabsInfoHeader extends StatelessWidget {
-  final QuerySnapshot tabsData;
-
-  TabsInfoHeader(this.tabsData);
-
-  String getTotalAmountFormatted() {
-    double total = 0;
-    for (DocumentSnapshot tab in tabsData.documents) {
-      if (tab["amount"] != null) total += tab["amount"];
-    }
-    return FlutterMoneyFormatter(amount: total).output.symbolOnLeft;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 120,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          Text(
-            "${tabsData.documents.length} OPEN TABS",
-            style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Text(getTotalAmountFormatted(),
-              style: Theme.of(context).textTheme.display2)
-        ],
-      ),
     );
   }
 }
