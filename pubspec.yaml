@@ -21,6 +21,8 @@ dependencies:
   timeago:
   flutter_spinkit:
   flutter_staggered_animations:
+  google_sign_in:
+  flutter_signin_button: 1.0.0
 
 dev_dependencies:
   flutter_test:

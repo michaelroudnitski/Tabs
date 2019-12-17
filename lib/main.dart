@@ -33,6 +33,7 @@ class App extends StatelessWidget {
         ),
         buttonTheme: ButtonThemeData(
           buttonColor: primaryColor,
+          textTheme: ButtonTextTheme.normal,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
