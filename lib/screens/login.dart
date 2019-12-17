@@ -137,7 +137,6 @@ class _LoginState extends State<Login> {
                                   style: TextStyle(color: Colors.red)),
                               SizedBox(height: 12),
                               RaisedButton(
-                                padding: EdgeInsets.all(14),
                                 child: Text("Sign In"),
                                 onPressed: _submitForm,
                               ),

@@ -121,7 +121,6 @@ class _RegisterState extends State<Register> {
                                   style: TextStyle(color: Colors.red)),
                               SizedBox(height: 12),
                               RaisedButton(
-                                padding: EdgeInsets.all(14),
                                 child: Text("Sign Up"),
                                 onPressed: _submitForm,
                               ),
