@@ -14,6 +14,7 @@ class TabModal extends StatelessWidget {
     String displayAmount =
         FlutterMoneyFormatter(amount: this.tab["amount"]).output.symbolOnLeft;
     return Container(
+      height: 450,
       margin: EdgeInsets.only(left: 18, right: 18),
       decoration: BoxDecoration(
         gradient: LinearGradient(
