@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tabs/controllers/tabsController.dart';
@@ -5,11 +6,64 @@ import 'package:tabs/screens/create.dart';
 import 'package:tabs/screens/welcome.dart';
 import 'package:tabs/services/auth.dart';
 import 'package:tabs/tabsContainer.dart';
+import 'dart:io' show Platform;
 
 class Home extends StatelessWidget {
   static const String id = "home_screen";
   final String uid;
   Home(this.uid);
+
+  void _showSignOutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        if (Platform.isIOS) {
+          return CupertinoAlertDialog(
+            title: Text("Confirm sign out?"),
+            content: Text("Your Tabs will still be here next time you sign in"),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                child: Text("Cancel"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              CupertinoDialogAction(
+                child: Text("Sign Out"),
+                onPressed: () {
+                  Auth.signOut();
+                  Navigator.pushReplacementNamed(context, Welcome.id);
+                },
+              ),
+            ],
+          );
+        } else
+          return AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            title: Text("Confirm sign out?"),
+            content: Text("Your Tabs will still be here next time you sign in"),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("Cancel"),
+                textColor: Colors.black87,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
+                child: Text("Sign Out"),
+                textColor: Colors.red,
+                onPressed: () {
+                  Auth.signOut();
+                  Navigator.pushReplacementNamed(context, Welcome.id);
+                },
+              ),
+            ],
+          );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +98,7 @@ class Home extends StatelessWidget {
               color: Theme.of(context).accentColor,
               icon: Icon(Icons.exit_to_app),
               onPressed: () {
-                Auth.signOut();
-                Navigator.pushReplacementNamed(context, Welcome.id);
+                _showSignOutDialog(context);
               },
             ),
           ),
