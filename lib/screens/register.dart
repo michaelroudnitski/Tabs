@@ -36,11 +36,13 @@ class _RegisterState extends State<Register> {
         });
         final user =
             await Auth.signUp(_emailController.text, _passwordController.text);
-        if (user != null)
+        if (user != null) {
+          Auth.sendEmailVerification();
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => Home(user)),
               ModalRoute.withName("/"));
+        }
       } catch (e) {
         print(e);
         setState(() {
