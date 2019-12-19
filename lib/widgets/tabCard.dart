@@ -25,6 +25,7 @@ class TabCard extends StatelessWidget {
           showModalBottomSheet(
             context: context,
             backgroundColor: Colors.transparent,
+            isScrollControlled: true,
             builder: (context) => TabModal(
               tab: this.tab,
             ),
