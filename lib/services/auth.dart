@@ -73,4 +73,8 @@ abstract class Auth {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     return user.isEmailVerified;
   }
+
+  static Future<void> resetPassword(email) async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+  }
 }
