@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tabs/services/auth.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import './home.dart';
+import './forgot_pass.dart';
 
 class Login extends StatefulWidget {
   static const String id = "/login";
@@ -136,6 +137,20 @@ class _LoginState extends State<Login> {
                               Text(errorMessage,
                                   style: TextStyle(color: Colors.red)),
                               SizedBox(height: 12),
+                              FlatButton(
+                                child: Text(
+                                  "Forgot your password?",
+                                  style: TextStyle(
+                                      color: Theme.of(context).accentColor),
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              ForgotPass()));
+                                },
+                              ),
                               RaisedButton(
                                 child: Text("Sign In"),
                                 onPressed: _submitForm,
