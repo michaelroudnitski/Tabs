@@ -71,7 +71,7 @@ class Home extends StatelessWidget {
       builder: (BuildContext context) {
         if (Platform.isIOS) {
           return CupertinoAlertDialog(
-            title: Text("Sorry, you need to verify your email"),
+            title: Text("Sorry, you need to verify your email first"),
             content: Text("Please check your email"),
             actions: <Widget>[
               CupertinoDialogAction(
@@ -86,7 +86,7 @@ class Home extends StatelessWidget {
           return AlertDialog(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            title: Text("Sorry, you need to verify your email"),
+            title: Text("Sorry, you need to verify your email first"),
             content: Text("Please check your email"),
             actions: <Widget>[
               FlatButton(
