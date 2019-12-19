@@ -5,7 +5,7 @@ class Contacts {
   static List<String> _contacts;
   static bool hasRequestedThisSession = false;
 
-  static Future<PermissionStatus> _checkPermission() async {
+  static Future<PermissionStatus> checkPermission() async {
     PermissionStatus permission = await PermissionHandler()
         .checkPermissionStatus(PermissionGroup.contacts);
     bool showRationale = await PermissionHandler()
@@ -24,7 +24,7 @@ class Contacts {
   }
 
   static void _getContacts() async {
-    if (await _checkPermission() == PermissionStatus.granted) {
+    if (await checkPermission() == PermissionStatus.granted) {
       Iterable<Contact> contacts =
           await ContactsService.getContacts(withThumbnails: false);
       _contacts = contacts

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tabs/controllers/tabsController.dart';
 
 class ChangeAmountDialog extends StatefulWidget {
@@ -28,6 +29,9 @@ class _ChangeAmountDialogState extends State<ChangeAmountDialog> {
           child: TextField(
             autofocus: true,
             decoration: InputDecoration(contentPadding: EdgeInsets.all(12)),
+            inputFormatters: [
+              WhitelistingTextInputFormatter(RegExp("[0-9.]")),
+            ],
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
             controller: _amountController,
             keyboardType: TextInputType.numberWithOptions(

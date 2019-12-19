@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tabs/controllers/tabsController.dart';
 import 'package:tabs/services/contacts.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -16,6 +17,12 @@ class _CreateFormState extends State<CreateForm> {
   final _descriptionController = TextEditingController();
   List<Widget> _pages;
   double _formProgress = 0.15;
+
+  @override
+  void initState() {
+    super.initState();
+    Contacts.checkPermission();
+  }
 
   void _submitTab() {
     TabsController.createTab(
@@ -141,6 +148,9 @@ class _CreateFormState extends State<CreateForm> {
         textField: TextFormField(
           controller: _amountController,
           autofocus: true,
+          inputFormatters: [
+            WhitelistingTextInputFormatter(RegExp("[0-9.]")),
+          ],
           keyboardType: TextInputType.numberWithOptions(decimal: true),
           decoration: InputDecoration(
             prefixIcon: Icon(Icons.attach_money),
