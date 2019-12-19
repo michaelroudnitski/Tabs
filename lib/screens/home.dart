@@ -65,6 +65,43 @@ class Home extends StatelessWidget {
     );
   }
 
+  void _showEmailConfirmDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        if (Platform.isIOS) {
+          return CupertinoAlertDialog(
+            title: Text("Sorry, you need to verify your email"),
+            content: Text("Please check your email"),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                child: Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        } else
+          return AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            title: Text("Sorry, you need to verify your email"),
+            content: Text("Please check your email"),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("OK"),
+                textColor: Colors.black87,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,8 +149,12 @@ class Home extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, Create.id);
+        onPressed: () async {
+          bool flag = await Auth.isEmailVerified();
+          if (flag)
+            Navigator.pushNamed(context, Create.id);
+          else
+            _showEmailConfirmDialog(context);
         },
         child: Icon(Icons.add),
       ),
