@@ -23,8 +23,8 @@ class Contacts {
     }
   }
 
-  static void _getContacts() async {
-    if (await checkPermission() == PermissionStatus.granted) {
+  static Future<void> _getContacts() async {
+    try {
       Iterable<Contact> contacts =
           await ContactsService.getContacts(withThumbnails: false);
       _contacts = contacts
@@ -32,13 +32,16 @@ class Contacts {
               ? contact.displayName
               : contact.givenName)
           .toList();
+    } catch (e) {
+      _contacts = null;
     }
   }
 
   static Future<List<String>> queryContacts(pattern) async {
-    if (_contacts == null)
-      _getContacts();
-    else if (_contacts != null && _contacts.length > 0 && pattern.length > 0) {
+    if (_contacts == null &&
+        await checkPermission() == PermissionStatus.granted)
+      await _getContacts();
+    if (_contacts != null && _contacts.length > 0 && pattern.length > 0) {
       return _contacts
           .where((contact) =>
               contact.toLowerCase().contains(pattern.toLowerCase()))

@@ -80,6 +80,13 @@ class Home extends StatelessWidget {
                   Navigator.of(context).pop();
                 },
               ),
+              CupertinoDialogAction(
+                child: Text("Resend Email"),
+                onPressed: () {
+                  Auth.sendEmailVerification();
+                  Navigator.of(context).pop();
+                },
+              ),
             ],
           );
         } else
@@ -93,6 +100,14 @@ class Home extends StatelessWidget {
                 child: Text("OK"),
                 textColor: Colors.black87,
                 onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
+                child: Text("OK"),
+                textColor: Colors.black87,
+                onPressed: () {
+                  Auth.sendEmailVerification();
                   Navigator.of(context).pop();
                 },
               ),

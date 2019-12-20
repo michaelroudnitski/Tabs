@@ -72,6 +72,7 @@ abstract class Auth {
   static Future<bool> isEmailVerified() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
     await user.reload();
+    user = await FirebaseAuth.instance.currentUser();
     return user.isEmailVerified;
   }
 
