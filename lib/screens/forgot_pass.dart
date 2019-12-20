@@ -24,16 +24,11 @@ class _ForgotPassState extends State<ForgotPass> {
   void _submitForm() async {
     if (_formKey.currentState.validate()) {
       try {
-        setState(() async {
-          await Auth.resetPassword(_emailController.text);
-          emailSent = true;
-        });
-      } catch (e) {
+        await Auth.resetPassword(_emailController.text);
         setState(() {
           emailSent = true;
-          print(e);
         });
-      }
+      } catch (e) {}
     }
   }
 
