@@ -22,12 +22,12 @@ abstract class SuggestionsController {
     }
   }
 
-  // TODO
-  static Future<Suggestions> setSuggestions() async {
+  static Future<Suggestions> updateSuggestions(
+      Map<String, List<String>> suggestions) async {
     FirebaseUser user = await Auth.getCurrentUser();
     await Firestore.instance
         .collection("suggestions")
         .document(user.uid)
-        .setData({"names": [], "amounts": [], "descriptions": []});
+        .setData(suggestions);
   }
 }
