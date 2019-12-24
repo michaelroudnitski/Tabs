@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:provider/provider.dart';
 import 'package:tabs/controllers/tabsController.dart';
+import 'package:tabs/providers/suggestionsState.dart';
 import 'package:tabs/services/contacts.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
@@ -151,8 +153,8 @@ class _CreateFormState extends State<CreateForm> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+  List<Widget> buildPages(
+      BuildContext context, Map<String, List<String>> suggestions) {
     _pages = [
       buildPage(
         pageIndex: 0,
@@ -185,7 +187,7 @@ class _CreateFormState extends State<CreateForm> {
             return null;
           },
         ),
-        suggestions: ["John", "Debrah", "Dad"],
+        suggestions: suggestions["names"],
       ),
       buildPage(
         pageIndex: 1,
@@ -204,7 +206,7 @@ class _CreateFormState extends State<CreateForm> {
             return null;
           },
         ),
-        suggestions: ["5", "20", "50"],
+        suggestions: suggestions["amounts"],
       ),
       buildPage(
           pageIndex: 2,
@@ -225,9 +227,13 @@ class _CreateFormState extends State<CreateForm> {
               return null;
             },
           ),
-          suggestions: ["Food", "Rent", "A job well done"]),
+          suggestions: suggestions["descriptions"]),
     ];
+    return _pages;
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Form(
       key: _formKey,
       child: Column(
@@ -238,10 +244,15 @@ class _CreateFormState extends State<CreateForm> {
               valueColor: AlwaysStoppedAnimation<Color>(
                   Theme.of(context).primaryColor)),
           Expanded(
-            child: PageView(
-              controller: _pageViewController,
-              physics: NeverScrollableScrollPhysics(),
-              children: _pages,
+            child: ChangeNotifierProvider(
+              builder: (context) => Suggestions(),
+              child: Consumer<Suggestions>(
+                builder: (_, consumedData, __) => PageView(
+                  controller: _pageViewController,
+                  physics: NeverScrollableScrollPhysics(),
+                  children: buildPages(context, consumedData.suggestions),
+                ),
+              ),
             ),
           ),
         ],
