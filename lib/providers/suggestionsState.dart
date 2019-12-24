@@ -33,14 +33,12 @@ class Suggestions extends ChangeNotifier {
 
   void _updateNames(String name) {
     /* Use queues as LRU cache */
-    DoubleLinkedQueue<String> names = Queue.of(suggestions["names"]);
-    if (names.contains(name)) {
-      names.remove((a) => a == name);
-      names.addFirst(name);
-    } else {
-      if (names.length >= _NAMES_LEN) names.removeLast();
-      names.addFirst(name);
-    }
+    DoubleLinkedQueue<String> names =
+        DoubleLinkedQueue.of(suggestions["names"]);
+    if (names.contains(name))
+      names.remove(name);
+    else if (names.length >= _NAMES_LEN) names.removeLast();
+    names.addFirst(name);
     suggestions["names"] = List.of(names);
   }
 }

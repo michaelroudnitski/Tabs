@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:tabs/providers/suggestionsState.dart';
 import 'package:tabs/services/auth.dart';
 
 abstract class SuggestionsController {
@@ -22,8 +21,7 @@ abstract class SuggestionsController {
     }
   }
 
-  static Future<Suggestions> updateSuggestions(
-      Map<String, List<String>> suggestions) async {
+  static void updateSuggestions(Map<String, List<String>> suggestions) async {
     FirebaseUser user = await Auth.getCurrentUser();
     await Firestore.instance
         .collection("suggestions")
