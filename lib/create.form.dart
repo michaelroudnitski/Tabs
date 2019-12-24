@@ -38,6 +38,24 @@ class _CreateFormState extends State<CreateForm> {
     Navigator.pop(context);
   }
 
+  void goBack() {
+    _formProgress -= 1 / _pages.length;
+    _pageViewController.previousPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.fastOutSlowIn,
+    );
+    FocusScope.of(context).unfocus();
+  }
+
+  void goNext() {
+    _formProgress += 1 / _pages.length;
+    _pageViewController.nextPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.fastOutSlowIn,
+    );
+    FocusScope.of(context).unfocus();
+  }
+
   Widget buildPage({
     @required String title,
     @required String description,
@@ -45,24 +63,6 @@ class _CreateFormState extends State<CreateForm> {
     @required int pageIndex,
     List<String> suggestions,
   }) {
-    void goBack() {
-      _formProgress -= 1 / _pages.length;
-      _pageViewController.previousPage(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.fastOutSlowIn,
-      );
-      FocusScope.of(context).unfocus();
-    }
-
-    void goNext() {
-      _formProgress += 1 / _pages.length;
-      _pageViewController.nextPage(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.fastOutSlowIn,
-      );
-      FocusScope.of(context).unfocus();
-    }
-
     List<Widget> generateSuggestions() {
       if (suggestions == null) return [];
       List<Widget> chips = [];
@@ -132,17 +132,24 @@ class _CreateFormState extends State<CreateForm> {
                         goBack();
                     },
                   ),
-                  RaisedButton(
-                    child: Text(pageIndex == 2 ? 'Submit' : 'Next'),
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        if (pageIndex == 2) {
-                          _submitTab();
-                        } else {
-                          goNext();
+                  Consumer<Suggestions>(
+                    builder: (_, suggestionsState, __) => RaisedButton(
+                      child: Text(pageIndex == 2 ? 'Submit' : 'Next'),
+                      onPressed: () {
+                        if (_formKey.currentState.validate()) {
+                          if (pageIndex == 2) {
+                            _submitTab();
+                            suggestionsState.updateSuggestions(
+                              _textControllers[0].text,
+                              _textControllers[1].text,
+                              _textControllers[2].text,
+                            );
+                          } else {
+                            goNext();
+                          }
                         }
-                      }
-                    },
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -153,8 +160,7 @@ class _CreateFormState extends State<CreateForm> {
     );
   }
 
-  List<Widget> buildPages(
-      BuildContext context, Map<String, List<String>> suggestions) {
+  List<Widget> buildPages(BuildContext context, Suggestions suggestionsState) {
     _pages = [
       buildPage(
         pageIndex: 0,
@@ -187,7 +193,7 @@ class _CreateFormState extends State<CreateForm> {
             return null;
           },
         ),
-        suggestions: suggestions["names"],
+        suggestions: suggestionsState.suggestions["names"],
       ),
       buildPage(
         pageIndex: 1,
@@ -206,7 +212,7 @@ class _CreateFormState extends State<CreateForm> {
             return null;
           },
         ),
-        suggestions: suggestions["amounts"],
+        suggestions: suggestionsState.suggestions["amounts"],
       ),
       buildPage(
           pageIndex: 2,
@@ -227,7 +233,7 @@ class _CreateFormState extends State<CreateForm> {
               return null;
             },
           ),
-          suggestions: suggestions["descriptions"]),
+          suggestions: suggestionsState.suggestions["descriptions"]),
     ];
     return _pages;
   }
@@ -247,10 +253,10 @@ class _CreateFormState extends State<CreateForm> {
             child: ChangeNotifierProvider(
               builder: (context) => Suggestions(),
               child: Consumer<Suggestions>(
-                builder: (_, consumedData, __) => PageView(
+                builder: (_, suggestionsState, __) => PageView(
                   controller: _pageViewController,
                   physics: NeverScrollableScrollPhysics(),
-                  children: buildPages(context, consumedData.suggestions),
+                  children: buildPages(context, suggestionsState),
                 ),
               ),
             ),
