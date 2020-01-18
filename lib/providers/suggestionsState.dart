@@ -5,7 +5,6 @@ import 'dart:math';
 
 class Suggestions extends ChangeNotifier {
   static const int _NAMES_LEN = 3;
-  static const int _AMOUNTS_LEN = 5;
   static const int _DESCRIPTIONS_LEN = 3;
   static Map<String, dynamic> _defaultSuggestions = {
     "names": [],
