@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1065120287531-vtvnks8unaq6dh7go4u8ecm054jbc7md.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1065120287531-vtvnks8unaq6dh7go4u8ecm054jbc7md</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCMLxrc6GaGlkX1OPEY7pkF0hq-Y918zGo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1065120287531</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.mroudnitski.tabs</string>
+	<key>PROJECT_ID</key>
+	<string>tabs-44ebe</string>
+	<key>STORAGE_BUCKET</key>
+	<string>tabs-44ebe.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1065120287531:ios:ce330d38e4e5ddbac4d36e</string>
+	<key>DATABASE_URL</key>
+	<string>https://tabs-44ebe.firebaseio.com</string>
+</dict>
+</plist>

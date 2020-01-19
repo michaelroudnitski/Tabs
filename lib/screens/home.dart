@@ -104,7 +104,7 @@ class Home extends StatelessWidget {
                 },
               ),
               FlatButton(
-                child: Text("OK"),
+                child: Text("Resend Email"),
                 textColor: Colors.black87,
                 onPressed: () {
                   Auth.sendEmailVerification();
