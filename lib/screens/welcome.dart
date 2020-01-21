@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -50,7 +52,7 @@ class _WelcomeState extends State<Welcome> {
                               .body2
                               .copyWith(color: Theme.of(context).primaryColor),
                         ),
-                        SizedBox(height: 100),
+                        SizedBox(height: 50),
                         Image(
                           image: AssetImage(
                             'assets/graphics/transfer.png',
@@ -75,6 +77,30 @@ class _WelcomeState extends State<Welcome> {
                                         ModalRoute.withName("/"));
                                 },
                               ),
+                              if (Platform.isIOS)
+                                SignInButton(
+                                  Buttons.AppleDark,
+                                  onPressed: () async {
+                                    setState(() => loading = true);
+                                    final user = await Auth.appleSignIn();
+                                    print(user);
+                                    setState(() => loading = false);
+                                    if (user != null)
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Home(user)),
+                                          ModalRoute.withName("/"));
+                                  },
+                                ),
+                              Row(children: <Widget>[
+                                Expanded(child: Divider()),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text("OR"),
+                                ),
+                                Expanded(child: Divider()),
+                              ]),
                               RaisedButton(
                                 child: Text("Create Account"),
                                 onPressed: () {
