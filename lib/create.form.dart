@@ -6,7 +6,6 @@ import 'package:tabs/controllers/tabsController.dart';
 import 'package:tabs/providers/suggestionsState.dart';
 import 'package:tabs/services/contacts.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:tabs/widgets/whoOwesSwitch.dart';
 
 class CreateForm extends StatefulWidget {
   @override
@@ -23,6 +22,7 @@ class _CreateFormState extends State<CreateForm> {
   ];
   List<Widget> _pages;
   double _formProgress = 0.15;
+  bool userOwesFriend = false;
 
   @override
   void initState() {
@@ -31,10 +31,14 @@ class _CreateFormState extends State<CreateForm> {
   }
 
   void _submitTab() {
+    String name = _textControllers[0].text;
+    double amount = double.parse(_textControllers[1].text);
+    if (userOwesFriend) amount *= -1;
+    String description = _textControllers[2].text;
     TabsController.createTab(
-      name: _textControllers[0].text,
-      amount: double.parse(_textControllers[1].text),
-      description: _textControllers[2].text,
+      name: name,
+      amount: amount,
+      description: description,
     );
     Navigator.pop(context);
   }
@@ -122,7 +126,7 @@ class _CreateFormState extends State<CreateForm> {
           Row(
             children: <Widget>[
               Flexible(child: textField),
-              if (option != null) option
+              if (option != null) option,
             ],
           ),
           Expanded(
@@ -206,8 +210,23 @@ class _CreateFormState extends State<CreateForm> {
       buildPage(
         pageIndex: 1,
         title: "Amount",
-        description: "Enter the amount ${_textControllers[0].text} owes you",
-        option: WhoOwesSwitch(),
+        description: userOwesFriend
+            ? "Enter the amount you owe ${_textControllers[0].text}."
+            : "Enter the amount ${_textControllers[0].text} owes you.",
+        option: IconButton(
+          color: userOwesFriend ? Colors.red : Theme.of(context).primaryColor,
+          icon: Icon(Icons.swap_horiz),
+          visualDensity: VisualDensity.comfortable,
+          enableFeedback: true,
+          tooltip: "Tap to change who owes who",
+          highlightColor: Colors.transparent,
+          splashColor: Colors.transparent,
+          onPressed: () {
+            setState(() {
+              userOwesFriend = !userOwesFriend;
+            });
+          },
+        ),
         textField: TextFormField(
           controller: _textControllers[1],
           autofocus: true,
