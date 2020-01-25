@@ -31,14 +31,11 @@ class _CreateFormState extends State<CreateForm> {
   }
 
   void _submitTab() {
-    String name = _textControllers[0].text;
-    double amount = double.parse(_textControllers[1].text);
-    if (userOwesFriend) amount *= -1;
-    String description = _textControllers[2].text;
     TabsController.createTab(
-      name: name,
-      amount: amount,
-      description: description,
+      name: _textControllers[0].text,
+      amount: double.parse(_textControllers[1].text),
+      description: _textControllers[2].text,
+      userOwesFriend: userOwesFriend,
     );
     Navigator.pop(context);
   }

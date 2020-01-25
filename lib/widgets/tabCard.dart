@@ -51,7 +51,9 @@ class TabCard extends StatelessWidget {
               Chip(
                 backgroundColor: this.tab["closed"] == true
                     ? Theme.of(context).accentColor.withAlpha(30)
-                    : Theme.of(context).primaryColor.withAlpha(30),
+                    : this.tab["userOwesFriend"] == true
+                        ? Colors.redAccent.withAlpha(30)
+                        : Theme.of(context).primaryColor.withAlpha(30),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(8),
@@ -62,7 +64,9 @@ class TabCard extends StatelessWidget {
                   style: TextStyle(
                       color: this.tab["closed"] == true
                           ? Theme.of(context).accentColor
-                          : Theme.of(context).primaryColor),
+                          : this.tab["userOwesFriend"] == true
+                              ? Colors.redAccent
+                              : Theme.of(context).primaryColor),
                 ),
               ),
               Expanded(
