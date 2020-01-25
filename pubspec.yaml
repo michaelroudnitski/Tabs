@@ -1,7 +1,7 @@
 name: tabs
 description: The expense sharing app.
 
-version: 1.0.0+6
+version: 1.0.1+7
 
 environment:
   sdk: ">=2.5.0 <3.0.0"

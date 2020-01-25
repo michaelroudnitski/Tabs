@@ -13,7 +13,6 @@ class SettingsState with ChangeNotifier {
     '₹',
     '₽',
     'R',
-    '₺',
     'zł',
     '฿',
     '₪'

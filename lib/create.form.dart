@@ -6,6 +6,7 @@ import 'package:tabs/controllers/tabsController.dart';
 import 'package:tabs/providers/suggestionsState.dart';
 import 'package:tabs/services/contacts.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:tabs/providers/settingsState.dart';
 
 class CreateForm extends StatefulWidget {
   @override
@@ -169,7 +170,11 @@ class _CreateFormState extends State<CreateForm> {
     );
   }
 
-  List<Widget> buildPages(BuildContext context, Suggestions suggestionsState) {
+  List<Widget> buildPages(
+    BuildContext context,
+    Suggestions suggestionsState,
+    SettingsState settingsState,
+  ) {
     _pages = [
       buildPage(
         pageIndex: 0,
@@ -242,8 +247,9 @@ class _CreateFormState extends State<CreateForm> {
       buildPage(
           pageIndex: 2,
           title: "What's this for?",
-          description:
-              "Why does ${_textControllers[0].text} owe you \$${_textControllers[1].text}?",
+          description: userOwesFriend
+              ? "Why do you owe ${_textControllers[0].text} ${settingsState.selectedCurrency}${_textControllers[1].text}?"
+              : "Why does ${_textControllers[0].text} owe you ${settingsState.selectedCurrency}${_textControllers[1].text}?",
           textField: TextFormField(
             controller: _textControllers[2],
             autofocus: true,
@@ -281,7 +287,11 @@ class _CreateFormState extends State<CreateForm> {
                 builder: (_, suggestionsState, __) => PageView(
                   controller: _pageViewController,
                   physics: NeverScrollableScrollPhysics(),
-                  children: buildPages(context, suggestionsState),
+                  children: buildPages(
+                    context,
+                    suggestionsState,
+                    Provider.of<SettingsState>(context),
+                  ),
                 ),
               ),
             ),
