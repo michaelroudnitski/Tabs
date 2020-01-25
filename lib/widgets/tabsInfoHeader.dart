@@ -3,18 +3,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:tabs/providers/filterState.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
+import 'package:tabs/providers/settingsState.dart';
 
 class TabsInfoHeader extends StatelessWidget {
   final List<DocumentSnapshot> openTabs;
 
   TabsInfoHeader(this.openTabs);
 
-  String getTotalAmountFormatted(List<DocumentSnapshot> tabs) {
+  String getTotalAmountFormatted(
+      List<DocumentSnapshot> tabs, String currencySymbol) {
     double total = 0;
     for (DocumentSnapshot tab in tabs) {
       if (tab["closed"] != true) total += tab["amount"];
     }
-    return FlutterMoneyFormatter(amount: total).output.symbolOnLeft;
+    return "$currencySymbol ${FlutterMoneyFormatter(amount: total).output.nonSymbol}";
   }
 
   String getHeaderText(List<DocumentSnapshot> tabs) {
@@ -65,7 +67,9 @@ class TabsInfoHeader extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          Text(getTotalAmountFormatted(tabs),
+          Text(
+              getTotalAmountFormatted(
+                  tabs, Provider.of<SettingsState>(context).selectedCurrency),
               style: Theme.of(context).textTheme.display2),
           SizedBox(
             height: 10,
