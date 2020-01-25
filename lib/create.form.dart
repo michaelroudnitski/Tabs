@@ -6,6 +6,7 @@ import 'package:tabs/controllers/tabsController.dart';
 import 'package:tabs/providers/suggestionsState.dart';
 import 'package:tabs/services/contacts.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:tabs/widgets/whoOwesSwitch.dart';
 
 class CreateForm extends StatefulWidget {
   @override
@@ -61,6 +62,7 @@ class _CreateFormState extends State<CreateForm> {
     @required String description,
     @required Widget textField,
     @required int pageIndex,
+    Widget option,
     List<String> suggestions,
   }) {
     List<Widget> generateSuggestions() {
@@ -91,6 +93,7 @@ class _CreateFormState extends State<CreateForm> {
       padding: const EdgeInsets.all(28.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Text(
             title,
@@ -116,7 +119,12 @@ class _CreateFormState extends State<CreateForm> {
           suggestions != null && suggestions.length > 0
               ? SizedBox(height: 12)
               : SizedBox(height: 42),
-          textField,
+          Row(
+            children: <Widget>[
+              Flexible(child: textField),
+              if (option != null) option
+            ],
+          ),
           Expanded(
             child: Align(
               alignment: Alignment.bottomRight,
@@ -199,6 +207,7 @@ class _CreateFormState extends State<CreateForm> {
         pageIndex: 1,
         title: "Amount",
         description: "Enter the amount ${_textControllers[0].text} owes you",
+        option: WhoOwesSwitch(),
         textField: TextFormField(
           controller: _textControllers[1],
           autofocus: true,
