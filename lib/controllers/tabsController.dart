@@ -3,8 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tabs/services/auth.dart';
 
 abstract class TabsController {
-  static Future createTab(
-      {String name, double amount, String description}) async {
+  static Future createTab({
+    String name,
+    double amount,
+    String description,
+    bool userOwesFriend,
+  }) async {
     FirebaseUser user = await Auth.getCurrentUser();
     return Firestore.instance.collection("tabs").add({
       "name": name,
@@ -12,6 +16,7 @@ abstract class TabsController {
       "description": description,
       "time": DateTime.now(),
       "closed": false,
+      "userOwesFriend": userOwesFriend,
       "uid": user.uid
     });
   }

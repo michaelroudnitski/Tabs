@@ -14,7 +14,10 @@ class TabsInfoHeader extends StatelessWidget {
       List<DocumentSnapshot> tabs, String currencySymbol) {
     double total = 0;
     for (DocumentSnapshot tab in tabs) {
-      if (tab["closed"] != true) total += tab["amount"];
+      if (tab["closed"] != true)
+        tab["userOwesFriend"] == true
+            ? total -= tab["amount"]
+            : total += tab["amount"];
     }
     return "$currencySymbol ${FlutterMoneyFormatter(amount: total).output.nonSymbol}";
   }

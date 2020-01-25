@@ -22,6 +22,7 @@ class _CreateFormState extends State<CreateForm> {
   ];
   List<Widget> _pages;
   double _formProgress = 0.15;
+  bool userOwesFriend = false;
 
   @override
   void initState() {
@@ -34,6 +35,7 @@ class _CreateFormState extends State<CreateForm> {
       name: _textControllers[0].text,
       amount: double.parse(_textControllers[1].text),
       description: _textControllers[2].text,
+      userOwesFriend: userOwesFriend,
     );
     Navigator.pop(context);
   }
@@ -61,6 +63,7 @@ class _CreateFormState extends State<CreateForm> {
     @required String description,
     @required Widget textField,
     @required int pageIndex,
+    Widget option,
     List<String> suggestions,
   }) {
     List<Widget> generateSuggestions() {
@@ -91,6 +94,7 @@ class _CreateFormState extends State<CreateForm> {
       padding: const EdgeInsets.all(28.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Text(
             title,
@@ -116,7 +120,12 @@ class _CreateFormState extends State<CreateForm> {
           suggestions != null && suggestions.length > 0
               ? SizedBox(height: 12)
               : SizedBox(height: 42),
-          textField,
+          Row(
+            children: <Widget>[
+              Flexible(child: textField),
+              if (option != null) option,
+            ],
+          ),
           Expanded(
             child: Align(
               alignment: Alignment.bottomRight,
@@ -198,7 +207,23 @@ class _CreateFormState extends State<CreateForm> {
       buildPage(
         pageIndex: 1,
         title: "Amount",
-        description: "Enter the amount ${_textControllers[0].text} owes you",
+        description: userOwesFriend
+            ? "Enter the amount you owe ${_textControllers[0].text}."
+            : "Enter the amount ${_textControllers[0].text} owes you.",
+        option: IconButton(
+          color: userOwesFriend ? Colors.red : Theme.of(context).primaryColor,
+          icon: Icon(Icons.swap_horiz),
+          visualDensity: VisualDensity.comfortable,
+          enableFeedback: true,
+          tooltip: "Tap to change who owes who",
+          highlightColor: Colors.transparent,
+          splashColor: Colors.transparent,
+          onPressed: () {
+            setState(() {
+              userOwesFriend = !userOwesFriend;
+            });
+          },
+        ),
         textField: TextFormField(
           controller: _textControllers[1],
           autofocus: true,
