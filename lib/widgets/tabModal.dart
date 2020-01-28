@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
+import 'package:provider/provider.dart';
 import 'package:tabs/controllers/tabsController.dart';
+import 'package:tabs/providers/settingsState.dart';
 import 'package:tabs/widgets/changeAmountDialog.dart';
 import 'package:intl/intl.dart';
 
@@ -13,7 +15,7 @@ class TabModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String displayAmount =
-        FlutterMoneyFormatter(amount: this.tab["amount"]).output.symbolOnLeft;
+        FlutterMoneyFormatter(amount: this.tab["amount"]).output.nonSymbol;
     DateFormat formatter = DateFormat("yyyy/MM/dd");
     String formattedDateOpened =
         formatter.format(DateTime.parse(this.tab["time"].toDate().toString()));
@@ -21,15 +23,7 @@ class TabModal extends StatelessWidget {
       height: 450,
       margin: EdgeInsets.only(left: 18, right: 18),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          stops: [0.1, 0.5],
-          colors: [
-            Colors.white,
-            Colors.white.withAlpha(250),
-          ],
-        ),
+        color: Colors.white,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(18),
           topRight: Radius.circular(18),
@@ -77,7 +71,7 @@ class TabModal extends StatelessWidget {
                   style: Theme.of(context).textTheme.subtitle2,
                 ),
                 Text(
-                  "$displayAmount",
+                  "${Provider.of<SettingsState>(context).selectedCurrency} $displayAmount",
                   style: Theme.of(context).textTheme.subtitle2,
                 ),
               ],

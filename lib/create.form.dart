@@ -234,8 +234,7 @@ class _CreateFormState extends State<CreateForm> {
           autofocus: true,
           inputFormatters: [WhitelistingTextInputFormatter(RegExp("[0-9.]"))],
           keyboardType: TextInputType.numberWithOptions(decimal: true),
-          decoration:
-              InputDecoration(prefixIcon: Icon(Icons.account_balance_wallet)),
+          decoration: InputDecoration(prefixIcon: Icon(Icons.card_giftcard)),
           validator: (value) {
             if (value.isEmpty) return 'Please enter the amount owed';
             if (double.tryParse(value) == null)
