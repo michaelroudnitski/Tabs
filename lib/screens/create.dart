@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tabs/create.form.dart';
 
-class Create extends StatelessWidget {
+class NewTab extends StatelessWidget {
   static const String id = "create_page";
 
   @override

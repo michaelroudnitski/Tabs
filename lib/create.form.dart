@@ -282,7 +282,7 @@ class _CreateFormState extends State<CreateForm> {
                   Theme.of(context).primaryColor)),
           Expanded(
             child: ChangeNotifierProvider(
-              builder: (context) => Suggestions(),
+              create: (context) => Suggestions(),
               child: Consumer<Suggestions>(
                 builder: (_, suggestionsState, __) => PageView(
                   controller: _pageViewController,

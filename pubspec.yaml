@@ -13,7 +13,7 @@ dependencies:
   firebase_core:
   firebase_auth: ^0.15.3+1
   cloud_firestore:
-  provider:
+  provider: ^4.0.2
   permission_handler:
   contacts_service:
   flutter_typeahead:

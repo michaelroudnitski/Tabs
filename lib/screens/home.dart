@@ -67,7 +67,7 @@ class Home extends StatelessWidget {
             child: MultiProvider(
               providers: [
                 StreamProvider<QuerySnapshot>(
-                  builder: (context) => TabsController.getUsersTabs(this.uid),
+                  create: (context) => TabsController.getUsersTabs(this.uid),
                 ),
               ],
               child: TabsContainer(),
@@ -80,7 +80,7 @@ class Home extends StatelessWidget {
         onPressed: () async {
           bool flag = await Auth.isEmailVerified();
           if (flag)
-            Navigator.pushNamed(context, Create.id);
+            Navigator.pushNamed(context, NewTab.id);
           else
             _showEmailConfirmDialog(context);
         },

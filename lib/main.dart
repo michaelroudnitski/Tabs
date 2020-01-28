@@ -18,7 +18,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<SettingsState>(
-      builder: (context) => SettingsState(),
+      create: (context) => SettingsState(),
       child: MaterialApp(
         title: 'Tabs',
         theme: ThemeData(
@@ -59,7 +59,7 @@ class App extends StatelessWidget {
           Welcome.id: (context) => Welcome(),
           Register.id: (context) => Register(),
           Login.id: (context) => Login(),
-          Create.id: (context) => Create(),
+          NewTab.id: (context) => NewTab(),
           Settings.id: (context) => Settings()
         },
         home: FutureBuilder<FirebaseUser>(

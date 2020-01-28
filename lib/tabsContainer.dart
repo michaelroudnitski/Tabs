@@ -40,7 +40,7 @@ class _TabsContainerState extends State<TabsContainer> {
           );
         else
           return ChangeNotifierProvider<FilterState>(
-            builder: (context) => FilterState(),
+            create: (context) => FilterState(),
             child: Column(
               children: <Widget>[
                 TabsInfoHeader(
