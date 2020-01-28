@@ -8,6 +8,8 @@ import 'package:tabs/services/contacts.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:tabs/providers/settingsState.dart';
 
+// TODO: refactor this monstrosity of a class
+
 class CreateForm extends StatefulWidget {
   @override
   _CreateFormState createState() => _CreateFormState();
@@ -68,6 +70,7 @@ class _CreateFormState extends State<CreateForm> {
     @required Widget textField,
     @required int pageIndex,
     Widget option,
+    Suggestions suggestionsState,
     List<String> suggestions,
   }) {
     List<Widget> generateSuggestions() {
@@ -88,7 +91,10 @@ class _CreateFormState extends State<CreateForm> {
                     ),
                   ),
                   onDeleted: () {
-                    // _textControllers[pageIndex].text = suggestion;
+                    if (pageIndex == 0)
+                      suggestionsState.removeName(suggestion);
+                    else if (pageIndex == 2)
+                      suggestionsState.removeDescription(suggestion);
                   },
                 )
               : ActionChip(
@@ -120,43 +126,44 @@ class _CreateFormState extends State<CreateForm> {
             style: Theme.of(context).textTheme.headline4,
           ),
           Text(description),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Flexible(
-                child: AnimationLimiter(
-                  child: Container(
-                    height: 50,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: AnimationConfiguration.toStaggeredList(
-                        delay: Duration(milliseconds: 150),
-                        duration: Duration(milliseconds: 200),
-                        childAnimationBuilder: (widget) => SlideAnimation(
-                          horizontalOffset: 70.0,
-                          child: FadeInAnimation(
-                            duration: Duration(milliseconds: 300),
-                            child: widget,
+          if (suggestions != null && suggestions.length > 0)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Flexible(
+                  child: AnimationLimiter(
+                    child: Container(
+                      height: 50,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: AnimationConfiguration.toStaggeredList(
+                          delay: Duration(milliseconds: 150),
+                          duration: Duration(milliseconds: 200),
+                          childAnimationBuilder: (widget) => SlideAnimation(
+                            horizontalOffset: 70.0,
+                            child: FadeInAnimation(
+                              duration: Duration(milliseconds: 300),
+                              child: widget,
+                            ),
                           ),
+                          children: generateSuggestions(),
                         ),
-                        children: generateSuggestions(),
                       ),
                     ),
                   ),
                 ),
-              ),
-              if (suggestions.length > 0 && pageIndex != 1)
-                IconButton(
-                    color: Theme.of(context).primaryColor,
-                    icon: Icon(
-                        suggestionsRemovable ? Icons.done_all : Icons.edit),
-                    onPressed: () {
-                      setState(() {
-                        suggestionsRemovable = !suggestionsRemovable;
-                      });
-                    }),
-            ],
-          ),
+                if (pageIndex != 1)
+                  IconButton(
+                      color: Theme.of(context).primaryColor,
+                      icon: Icon(
+                          suggestionsRemovable ? Icons.done_all : Icons.edit),
+                      onPressed: () {
+                        setState(() {
+                          suggestionsRemovable = !suggestionsRemovable;
+                        });
+                      }),
+              ],
+            ),
           suggestions != null && suggestions.length > 0
               ? SizedBox(height: 12)
               : SizedBox(height: 42),
@@ -248,6 +255,7 @@ class _CreateFormState extends State<CreateForm> {
           },
         ),
         suggestions: suggestionsState.suggestions["names"],
+        suggestionsState: suggestionsState,
       ),
       buildPage(
         pageIndex: 1,
@@ -281,28 +289,31 @@ class _CreateFormState extends State<CreateForm> {
           },
         ),
         suggestions: suggestionsState.suggestions["amounts"],
+        suggestionsState: suggestionsState,
       ),
       buildPage(
-          pageIndex: 2,
-          title: "What's this for?",
-          description: userOwesFriend
-              ? "Why do you owe ${_textControllers[0].text} ${settingsState.selectedCurrency}${_textControllers[1].text}?"
-              : "Why does ${_textControllers[0].text} owe you ${settingsState.selectedCurrency}${_textControllers[1].text}?",
-          textField: TextFormField(
-            controller: _textControllers[2],
-            autofocus: true,
-            textCapitalization: TextCapitalization.sentences,
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.message),
-            ),
-            validator: (value) {
-              if (value.isEmpty) return 'Please enter a reason';
-              if (value.length > 21)
-                return 'Surpassed character limit. ${value.length}/21';
-              return null;
-            },
+        pageIndex: 2,
+        title: "What's this for?",
+        description: userOwesFriend
+            ? "Why do you owe ${_textControllers[0].text} ${settingsState.selectedCurrency}${_textControllers[1].text}?"
+            : "Why does ${_textControllers[0].text} owe you ${settingsState.selectedCurrency}${_textControllers[1].text}?",
+        textField: TextFormField(
+          controller: _textControllers[2],
+          autofocus: true,
+          textCapitalization: TextCapitalization.sentences,
+          decoration: InputDecoration(
+            prefixIcon: Icon(Icons.message),
           ),
-          suggestions: suggestionsState.suggestions["descriptions"]),
+          validator: (value) {
+            if (value.isEmpty) return 'Please enter a reason';
+            if (value.length > 21)
+              return 'Surpassed character limit. ${value.length}/21';
+            return null;
+          },
+        ),
+        suggestions: suggestionsState.suggestions["descriptions"],
+        suggestionsState: suggestionsState,
+      ),
     ];
     return _pages;
   }
@@ -322,7 +333,7 @@ class _CreateFormState extends State<CreateForm> {
             child: ChangeNotifierProvider(
               create: (context) => Suggestions(),
               child: Consumer<Suggestions>(
-                builder: (_, suggestionsState, __) => PageView(
+                builder: (context, suggestionsState, __) => PageView(
                   controller: _pageViewController,
                   physics: NeverScrollableScrollPhysics(),
                   children: buildPages(

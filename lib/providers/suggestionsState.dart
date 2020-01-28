@@ -6,12 +6,11 @@ import 'dart:math';
 class Suggestions extends ChangeNotifier {
   static const int _NAMES_LEN = 3;
   static const int _DESCRIPTIONS_LEN = 3;
-  static Map<String, dynamic> _defaultSuggestions = {
+  Map<String, dynamic> _savedSuggestions = {
     "names": [],
     "amounts": ["5", "10", "20", "50"],
-    "descriptions": {"Food": 0, "Rent": 0, "A job well done": 0}
+    "descriptions": Map<String, int>()
   };
-  Map<String, dynamic> _savedSuggestions;
 
   Suggestions() {
     _fetchFromDatabase();
@@ -20,28 +19,19 @@ class Suggestions extends ChangeNotifier {
   Map<String, List<String>> get suggestions {
     /* only need to convert descriptions from freq map to list */
     Map<String, List<String>> formatted = Map();
-    try {
-      formatted["names"] = _savedSuggestions["names"].cast<String>();
-      formatted["amounts"] = _savedSuggestions["amounts"].cast<String>();
-      formatted["descriptions"] = _freqMapToList(
-        _savedSuggestions["descriptions"],
-        _DESCRIPTIONS_LEN,
-      );
-    } catch (e) {
-      formatted["names"] = _defaultSuggestions["names"].cast<String>();
-      formatted["amounts"] = _defaultSuggestions["amounts"].cast<String>();
-      formatted["descriptions"] = _freqMapToList(
-        _defaultSuggestions["descriptions"],
-        _DESCRIPTIONS_LEN,
-      );
-    }
+    formatted["names"] = _savedSuggestions["names"].cast<String>();
+    formatted["amounts"] = _savedSuggestions["amounts"].cast<String>();
+    formatted["descriptions"] = _freqMapToList(
+      _savedSuggestions["descriptions"],
+      _DESCRIPTIONS_LEN,
+    );
     return formatted;
   }
 
   void _fetchFromDatabase() async {
-    Map<String, dynamic> savedSuggestions =
+    Map<String, dynamic> suggestions =
         await SuggestionsController.fetchSuggestions();
-    _savedSuggestions = savedSuggestions ?? _defaultSuggestions;
+    if (suggestions != null) _savedSuggestions = suggestions;
     notifyListeners();
   }
 
@@ -68,7 +58,7 @@ class Suggestions extends ChangeNotifier {
     if (descriptionsMap.containsKey(description))
       descriptionsMap[description]++;
     else {
-      if (descriptionsMap.length >= 9) {
+      if (descriptionsMap.length >= 6) {
         /* remove the least frequent entry */
         int minimum = descriptionsMap.values.reduce(min);
         for (String key in descriptionsMap.keys) {
@@ -82,9 +72,23 @@ class Suggestions extends ChangeNotifier {
     }
   }
 
+  void removeName(String name) {
+    _savedSuggestions["names"].remove(name);
+    notifyListeners();
+    SuggestionsController.updateSuggestions(_savedSuggestions);
+  }
+
+  void removeDescription(String description) {
+    _savedSuggestions["descriptions"].remove(description);
+    print(_savedSuggestions["descriptions"]);
+    notifyListeners();
+    SuggestionsController.updateSuggestions(_savedSuggestions);
+  }
+
   /// returns k most frequent items in frequency map
   List<String> _freqMapToList(Map<String, int> map, int k) {
     List<int> frequencies = map.values.toList();
+    k = min(k, frequencies.length);
     frequencies.sort((a, b) => b.compareTo(a)); // descending
     Map<String, int> frequencyMapCopy = Map.of(map);
     List<String> descriptions = List();
