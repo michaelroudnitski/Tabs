@@ -96,7 +96,7 @@ class _LoginState extends State<Login> {
                           "Welcome Back",
                           style: Theme.of(context)
                               .textTheme
-                              .display1
+                              .headline4
                               .copyWith(color: Theme.of(context).primaryColor),
                         ),
                         SizedBox(height: 36),
@@ -140,7 +140,7 @@ class _LoginState extends State<Login> {
                               FlatButton(
                                 child: Text(
                                   "Forgot your password?",
-                                  style: Theme.of(context).textTheme.body1,
+                                  style: Theme.of(context).textTheme.bodyText2,
                                 ),
                                 onPressed: () {
                                   Navigator.push(

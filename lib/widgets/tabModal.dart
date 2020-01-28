@@ -47,7 +47,7 @@ class TabModal extends StatelessWidget {
                     : "${this.tab["name"]}'s Tab",
                 style: Theme.of(context)
                     .textTheme
-                    .headline
+                    .headline5
                     .copyWith(fontWeight: FontWeight.bold)),
             Text(
               "$formattedDateOpened",
@@ -74,11 +74,11 @@ class TabModal extends StatelessWidget {
               children: <Widget>[
                 Text(
                   "${this.tab["description"]}",
-                  style: Theme.of(context).textTheme.subtitle,
+                  style: Theme.of(context).textTheme.subtitle2,
                 ),
                 Text(
                   "$displayAmount",
-                  style: Theme.of(context).textTheme.subtitle,
+                  style: Theme.of(context).textTheme.subtitle2,
                 ),
               ],
             ),

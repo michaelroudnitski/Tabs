@@ -28,9 +28,9 @@ class App extends StatelessWidget {
           appBarTheme: AppBarTheme(color: Colors.white),
           fontFamily: 'Rubik',
           textTheme: TextTheme(
-            display1:
+            headline4:
                 TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
-            display2: TextStyle(
+            headline3: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w700,
             ),
@@ -76,7 +76,7 @@ class App extends StatelessWidget {
             } else {
               return Text(
                 "Tabs",
-                style: Theme.of(context).textTheme.display1,
+                style: Theme.of(context).textTheme.headline4,
               );
             }
           },

@@ -81,7 +81,7 @@ class _RegisterState extends State<Register> {
                           "Create Account",
                           style: Theme.of(context)
                               .textTheme
-                              .display1
+                              .headline4
                               .copyWith(color: Theme.of(context).primaryColor),
                         ),
                         SizedBox(height: 36),

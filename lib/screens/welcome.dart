@@ -42,14 +42,14 @@ class _WelcomeState extends State<Welcome> {
                           "Tabs",
                           style: Theme.of(context)
                               .textTheme
-                              .display2
+                              .headline3
                               .copyWith(color: Theme.of(context).primaryColor),
                         ),
                         Text(
                           "The expense sharing app.",
                           style: Theme.of(context)
                               .textTheme
-                              .body2
+                              .bodyText1
                               .copyWith(color: Theme.of(context).primaryColor),
                         ),
                         SizedBox(height: 50),

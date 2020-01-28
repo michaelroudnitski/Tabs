@@ -73,7 +73,7 @@ class TabsInfoHeader extends StatelessWidget {
           Text(
               getTotalAmountFormatted(
                   tabs, Provider.of<SettingsState>(context).selectedCurrency),
-              style: Theme.of(context).textTheme.display2),
+              style: Theme.of(context).textTheme.headline3),
           SizedBox(
             height: 10,
           ),

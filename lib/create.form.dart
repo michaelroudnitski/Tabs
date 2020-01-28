@@ -99,7 +99,7 @@ class _CreateFormState extends State<CreateForm> {
         children: <Widget>[
           Text(
             title,
-            style: Theme.of(context).textTheme.display1,
+            style: Theme.of(context).textTheme.headline4,
           ),
           Text(description),
           AnimationLimiter(
@@ -234,7 +234,8 @@ class _CreateFormState extends State<CreateForm> {
           autofocus: true,
           inputFormatters: [WhitelistingTextInputFormatter(RegExp("[0-9.]"))],
           keyboardType: TextInputType.numberWithOptions(decimal: true),
-          decoration: InputDecoration(prefixIcon: Icon(Icons.attach_money)),
+          decoration:
+              InputDecoration(prefixIcon: Icon(Icons.account_balance_wallet)),
           validator: (value) {
             if (value.isEmpty) return 'Please enter the amount owed';
             if (double.tryParse(value) == null)

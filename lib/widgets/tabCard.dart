@@ -39,13 +39,13 @@ class TabCard extends StatelessWidget {
             children: <Widget>[
               Text(
                 this.tab["name"],
-                style: Theme.of(context).textTheme.subhead,
+                style: Theme.of(context).textTheme.subtitle1,
               ),
               Text(
                 "${Provider.of<SettingsState>(context).selectedCurrency} ${FlutterMoneyFormatter(amount: this.tab["amount"]).output.nonSymbol}",
                 style: Theme.of(context)
                     .textTheme
-                    .headline
+                    .headline5
                     .copyWith(fontWeight: FontWeight.bold),
               ),
               Chip(
@@ -77,7 +77,7 @@ class TabCard extends StatelessWidget {
                     if (this.tab["closed"] == true)
                       Text(
                         "Closed",
-                        style: Theme.of(context).textTheme.body1,
+                        style: Theme.of(context).textTheme.bodyText2,
                       ),
                     Text(
                       timeago.format(this.tab["closed"] == true

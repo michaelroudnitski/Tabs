@@ -3,13 +3,16 @@ import 'package:provider/provider.dart';
 import 'package:tabs/providers/settingsState.dart';
 
 class Settings extends StatelessWidget {
-  static const String id = "/register";
+  static const String id = "/settings";
   final currencies = SettingsState.currencies;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(elevation: 0),
+      appBar: AppBar(
+        elevation: 0,
+        title: Text("Settings"),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -17,13 +20,8 @@ class Settings extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                "Settings",
-                style: Theme.of(context).textTheme.display1,
-              ),
-              Divider(),
-              Text(
                 "Currency",
-                style: Theme.of(context).textTheme.title,
+                style: Theme.of(context).textTheme.headline6,
               ),
               Wrap(
                 spacing: 8,
