@@ -24,6 +24,7 @@ class _CreateFormState extends State<CreateForm> {
   List<Widget> _pages;
   double _formProgress = 0.15;
   bool userOwesFriend = false;
+  bool suggestionsRemovable = false;
 
   @override
   void initState() {
@@ -47,6 +48,7 @@ class _CreateFormState extends State<CreateForm> {
       duration: const Duration(milliseconds: 300),
       curve: Curves.fastOutSlowIn,
     );
+    suggestionsRemovable = false;
     FocusScope.of(context).unfocus();
   }
 
@@ -56,6 +58,7 @@ class _CreateFormState extends State<CreateForm> {
       duration: const Duration(milliseconds: 300),
       curve: Curves.fastOutSlowIn,
     );
+    suggestionsRemovable = false;
     FocusScope.of(context).unfocus();
   }
 
@@ -73,19 +76,34 @@ class _CreateFormState extends State<CreateForm> {
       for (String suggestion in suggestions) {
         chips.add(Padding(
           padding: const EdgeInsets.only(right: 8.0),
-          child: ActionChip(
-            label: Text(suggestion),
-            backgroundColor: Colors.white,
-            elevation: 1,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(8),
-              ),
-            ),
-            onPressed: () {
-              _textControllers[pageIndex].text = suggestion;
-            },
-          ),
+          child: suggestionsRemovable
+              ? Chip(
+                  label: Text(suggestion),
+                  backgroundColor: Colors.white,
+                  deleteIconColor: Colors.red,
+                  elevation: 1,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(8),
+                    ),
+                  ),
+                  onDeleted: () {
+                    // _textControllers[pageIndex].text = suggestion;
+                  },
+                )
+              : ActionChip(
+                  label: Text(suggestion),
+                  backgroundColor: Colors.white,
+                  elevation: 1,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(8),
+                    ),
+                  ),
+                  onPressed: () {
+                    _textControllers[pageIndex].text = suggestion;
+                  },
+                ),
         ));
       }
       return chips;
@@ -102,21 +120,42 @@ class _CreateFormState extends State<CreateForm> {
             style: Theme.of(context).textTheme.headline4,
           ),
           Text(description),
-          AnimationLimiter(
-            child: Row(
-              children: AnimationConfiguration.toStaggeredList(
-                delay: Duration(milliseconds: 150),
-                duration: Duration(milliseconds: 200),
-                childAnimationBuilder: (widget) => SlideAnimation(
-                  horizontalOffset: 70.0,
-                  child: FadeInAnimation(
-                    duration: Duration(milliseconds: 300),
-                    child: widget,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Flexible(
+                child: AnimationLimiter(
+                  child: Container(
+                    height: 50,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: AnimationConfiguration.toStaggeredList(
+                        delay: Duration(milliseconds: 150),
+                        duration: Duration(milliseconds: 200),
+                        childAnimationBuilder: (widget) => SlideAnimation(
+                          horizontalOffset: 70.0,
+                          child: FadeInAnimation(
+                            duration: Duration(milliseconds: 300),
+                            child: widget,
+                          ),
+                        ),
+                        children: generateSuggestions(),
+                      ),
+                    ),
                   ),
                 ),
-                children: generateSuggestions(),
               ),
-            ),
+              if (suggestions.length > 0 && pageIndex != 1)
+                IconButton(
+                    color: Theme.of(context).primaryColor,
+                    icon: Icon(
+                        suggestionsRemovable ? Icons.done_all : Icons.edit),
+                    onPressed: () {
+                      setState(() {
+                        suggestionsRemovable = !suggestionsRemovable;
+                      });
+                    }),
+            ],
           ),
           suggestions != null && suggestions.length > 0
               ? SizedBox(height: 12)
@@ -179,7 +218,8 @@ class _CreateFormState extends State<CreateForm> {
       buildPage(
         pageIndex: 0,
         title: "Name",
-        description: "Enter the name of the person who owes you money.",
+        description:
+            "Enter the name of the person who you're making this tab for.",
         textField: TypeAheadFormField(
           textFieldConfiguration: TextFieldConfiguration(
             controller: _textControllers[0],
@@ -221,8 +261,6 @@ class _CreateFormState extends State<CreateForm> {
           visualDensity: VisualDensity.comfortable,
           enableFeedback: true,
           tooltip: "Tap to change who owes who",
-          highlightColor: Colors.transparent,
-          splashColor: Colors.transparent,
           onPressed: () {
             setState(() {
               userOwesFriend = !userOwesFriend;
