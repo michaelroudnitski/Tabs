@@ -3,6 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tabs/services/auth.dart';
 
 abstract class SuggestionsController {
+  static Map<String, dynamic> _defaultSuggestions = {
+    "names": [],
+    "amounts": ["5", "10", "20", "50"],
+    "descriptions": {"Food": 0, "Rent": 0, "A job well done": 0}
+  };
+
   static Future<Map<String, dynamic>> fetchSuggestions() async {
     try {
       FirebaseUser user = await Auth.getCurrentUser();
@@ -10,13 +16,13 @@ abstract class SuggestionsController {
           .collection("suggestions")
           .document(user.uid)
           .get();
+      if (doc == null) return _defaultSuggestions;
       return {
         "names": List<String>.from(doc.data["names"]),
         "amounts": List<String>.from(doc.data["amounts"]),
         "descriptions": Map<String, int>.from(doc.data["descriptions"])
       };
     } catch (e) {
-      /* don't need to do anything (we always have default suggestions) */
       return null;
     }
   }
