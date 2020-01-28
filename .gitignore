@@ -100,5 +100,4 @@ coverage/
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
 
-assets
 .flutter-plugins-dependencies
