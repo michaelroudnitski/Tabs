@@ -39,9 +39,10 @@ class _RegisterState extends State<Register> {
         if (user != null) {
           Auth.sendEmailVerification();
           Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => Home(user)),
-              ModalRoute.withName("/"));
+            context,
+            MaterialPageRoute(builder: (context) => Home(user)),
+            (_) => false,
+          );
         }
       } catch (e) {
         print(e);
