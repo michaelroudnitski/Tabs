@@ -7,15 +7,16 @@ class ConfirmDialog extends StatelessWidget {
   final String content;
   final Function confirm;
   final String confirmText;
-  ConfirmDialog(
-      {@required this.title,
-      @required this.content,
-      @required this.confirm,
-      this.confirmText = "Confirm"});
+  ConfirmDialog({
+    @required this.title,
+    @required this.content,
+    @required this.confirm,
+    this.confirmText = "Confirm",
+  });
 
   @override
   Widget build(BuildContext context) {
-    if (Platform.isIOS) {
+    if (!Platform.isIOS) {
       return CupertinoAlertDialog(
         title: Text(title),
         content: Text(content),
@@ -26,10 +27,7 @@ class ConfirmDialog extends StatelessWidget {
           ),
           CupertinoDialogAction(
             child: Text(confirmText),
-            onPressed: () {
-              confirm();
-              Navigator.of(context).pop();
-            },
+            onPressed: confirm,
           ),
         ],
       );
@@ -47,10 +45,7 @@ class ConfirmDialog extends StatelessWidget {
           FlatButton(
             child: Text(confirmText),
             textColor: Colors.blueAccent,
-            onPressed: () {
-              confirm();
-              Navigator.of(context).pop();
-            },
+            onPressed: confirm,
           ),
         ],
       );

@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:tabs/controllers/tabsController.dart';
 import 'package:tabs/screens/create.dart';
 import 'package:tabs/screens/settings.dart';
-import 'package:tabs/screens/welcome.dart';
 import 'package:tabs/services/auth.dart';
 import 'package:tabs/tabsContainer.dart';
 import 'dart:io' show Platform;
@@ -43,17 +42,6 @@ class Home extends StatelessWidget {
           ),
           Positioned(
             top: 30,
-            left: 5,
-            child: IconButton(
-              color: Theme.of(context).accentColor,
-              icon: Icon(Icons.exit_to_app),
-              onPressed: () {
-                _showSignOutDialog(context);
-              },
-            ),
-          ),
-          Positioned(
-            top: 30,
             right: 5,
             child: IconButton(
               color: Theme.of(context).accentColor,
@@ -87,59 +75,6 @@ class Home extends StatelessWidget {
         child: Icon(Icons.add),
       ),
     );
-  }
-}
-
-void _showSignOutDialog(BuildContext context) async {
-  final confirmed = await showDialog<bool>(
-        context: context,
-        builder: (BuildContext context) {
-          final cancel = () => Navigator.of(context).pop(false);
-          final confirm = () => Navigator.of(context).pop(true);
-
-          if (Platform.isIOS) {
-            return CupertinoAlertDialog(
-              title: Text("Confirm sign out?"),
-              content:
-                  Text("Your Tabs will still be here next time you sign in"),
-              actions: <Widget>[
-                CupertinoDialogAction(
-                  child: Text("Cancel"),
-                  onPressed: cancel,
-                ),
-                CupertinoDialogAction(
-                  child: Text("Sign Out"),
-                  onPressed: confirm,
-                ),
-              ],
-            );
-          } else
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8)),
-              title: Text("Confirm sign out?"),
-              content:
-                  Text("Your Tabs will still be here next time you sign in"),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text("Cancel"),
-                  textColor: Colors.black87,
-                  onPressed: cancel,
-                ),
-                FlatButton(
-                  child: Text("Sign Out"),
-                  textColor: Colors.red,
-                  onPressed: confirm,
-                ),
-              ],
-            );
-        },
-      ) ??
-      false;
-
-  if (confirmed) {
-    Auth.signOut();
-    Navigator.pushNamedAndRemoveUntil(context, Welcome.id, (_) => false);
   }
 }
 

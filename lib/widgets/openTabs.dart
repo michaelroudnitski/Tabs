@@ -35,7 +35,10 @@ class OpenTabs extends StatelessWidget {
                     content:
                         "You will still see these tabs on the closed tabs page",
                     confirmText: "Close All",
-                    confirm: () => TabsController.closeAllTabs(tabs),
+                    confirm: () {
+                      Navigator.of(context).pop();
+                      TabsController.closeAllTabs(tabs);
+                    },
                   ),
                 );
               },

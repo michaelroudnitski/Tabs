@@ -34,7 +34,10 @@ class ClosedTabs extends StatelessWidget {
                     title: "Delete all closed tabs?",
                     content: "You cannot undo this action",
                     confirmText: "Delete all",
-                    confirm: () => TabsController.deleteAllTabs(tabs),
+                    confirm: () {
+                      Navigator.of(context).pop();
+                      TabsController.deleteAllTabs(tabs);
+                    },
                   ),
                 );
               },
