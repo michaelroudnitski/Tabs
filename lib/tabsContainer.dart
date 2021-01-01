@@ -4,7 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:tabs/controllers/tabsController.dart';
 import 'package:tabs/providers/filterState.dart';
-import 'package:tabs/widgets/tabsGrid.dart';
+import 'package:tabs/widgets/openTabs.dart';
+import 'package:tabs/widgets/closedTabs.dart';
 import 'package:tabs/widgets/tabsInfoHeader.dart';
 
 class TabsContainer extends StatefulWidget {
@@ -70,7 +71,7 @@ class _TabsContainerState extends State<TabsContainer> {
                       });
                     },
                     physics: ClampingScrollPhysics(),
-                    children: <Widget>[TabsGrid(true), TabsGrid(false)],
+                    children: <Widget>[OpenTabs(), ClosedTabs()],
                   ),
                 ),
               ],

@@ -6,9 +6,9 @@ import 'package:tabs/providers/filterState.dart';
 import 'package:tabs/widgets/tabCard.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
-class TabsGrid extends StatelessWidget {
-  final bool showOpenTabs;
-  TabsGrid(this.showOpenTabs);
+class OpenTabs extends StatelessWidget {
+  // final bool showOpenTabs;
+  OpenTabs();
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +23,7 @@ class TabsGrid extends StatelessWidget {
       else
         tabs = tabsData.documents;
       /* filter tabs by closed status */
-      tabs = this.showOpenTabs
-          ? TabsController.filterOpenTabs(tabs)
-          : TabsController.filterClosedTabs(tabs);
+      tabs = TabsController.filterOpenTabs(tabs);
       tabs.sort((a, b) => a["time"].toDate().compareTo(b["time"].toDate()));
 
       if (tabs.length > 0)
@@ -65,13 +63,9 @@ class TabsGrid extends StatelessWidget {
                 height: 100,
               ),
               Image(
-                image: this.showOpenTabs
-                    ? AssetImage('assets/graphics/not-found.png')
-                    : AssetImage('assets/graphics/logic.png'),
+                image: AssetImage('assets/graphics/not-found.png'),
               ),
-              Text(this.showOpenTabs
-                  ? "You don't have any open tabs"
-                  : "Closed tabs will appear here")
+              Text("You don't have any open tabs"),
             ],
           ),
         );
