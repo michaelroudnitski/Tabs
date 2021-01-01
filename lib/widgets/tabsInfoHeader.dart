@@ -52,10 +52,7 @@ class TabsInfoHeader extends StatelessWidget {
       tabs = openTabs;
 
     return Container(
-      height:
-          Provider.of<FilterState>(context).filterEnabled || tabs.length == 0
-              ? 150
-              : 100,
+      height: 100,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: tabs.length > 0

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tabs/services/auth.dart';
+import 'package:flutter/services.dart';
 
 abstract class TabsController {
   static Future createTab({
@@ -29,6 +30,7 @@ abstract class TabsController {
   }
 
   static Future updateAmount(String tabId, double newAmount) {
+    HapticFeedback.mediumImpact();
     return Firestore.instance
         .collection("tabs")
         .document(tabId)
@@ -36,6 +38,7 @@ abstract class TabsController {
   }
 
   static Future closeTab(String tabId) {
+    HapticFeedback.mediumImpact();
     return Firestore.instance
         .collection("tabs")
         .document(tabId)
@@ -43,6 +46,7 @@ abstract class TabsController {
   }
 
   static Future reopenTab(String tabId) {
+    HapticFeedback.mediumImpact();
     return Firestore.instance
         .collection("tabs")
         .document(tabId)
@@ -50,7 +54,26 @@ abstract class TabsController {
   }
 
   static Future deleteTab(String tabId) {
+    HapticFeedback.mediumImpact();
     return Firestore.instance.collection("tabs").document(tabId).delete();
+  }
+
+  static Future<void> closeAllTabs(Iterable<DocumentSnapshot> tabs) async {
+    WriteBatch writeBatch = Firestore.instance.batch();
+    tabs.forEach((t) {
+      writeBatch.updateData(t.reference, {"closed": true, "timeClosed": DateTime.now()});
+    });
+    writeBatch.commit();
+    HapticFeedback.mediumImpact();
+  }
+
+  static Future<void> deleteAllTabs(Iterable<DocumentSnapshot> tabs) async {
+    WriteBatch writeBatch = Firestore.instance.batch();
+    tabs.forEach((t) {
+      writeBatch.delete(t.reference);
+    });
+    writeBatch.commit();
+    HapticFeedback.mediumImpact();
   }
 
   static List<DocumentSnapshot> filterOpenTabs(

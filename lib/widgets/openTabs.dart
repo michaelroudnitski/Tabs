@@ -5,10 +5,9 @@ import 'package:tabs/controllers/tabsController.dart';
 import 'package:tabs/providers/filterState.dart';
 import 'package:tabs/widgets/tabCard.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:tabs/widgets/confirmDialog.dart';
 
 class OpenTabs extends StatelessWidget {
-  OpenTabs();
-
   @override
   Widget build(BuildContext context) {
     List<DocumentSnapshot> tabs;
@@ -27,6 +26,23 @@ class OpenTabs extends StatelessWidget {
       if (tabs.length > 0)
         return Column(
           children: <Widget>[
+            OutlineButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (_) => new ConfirmDialog(
+                    title: "Close all open tabs?",
+                    content:
+                        "You will still see these tabs on the closed tabs page",
+                    confirmText: "Close All",
+                    confirm: () => TabsController.closeAllTabs(tabs),
+                  ),
+                );
+              },
+              color: Colors.white,
+              textColor: Colors.white,
+              child: Text("Close All"),
+            ),
             AnimationLimiter(
               child: Expanded(
                 child: GridView.builder(

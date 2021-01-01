@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tabs/controllers/tabsController.dart';
 import 'package:tabs/providers/filterState.dart';
+import 'package:tabs/widgets/confirmDialog.dart';
 import 'package:tabs/widgets/tabCard.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class ClosedTabs extends StatelessWidget {
-  ClosedTabs();
-
   @override
   Widget build(BuildContext context) {
     List<DocumentSnapshot> tabs;
@@ -27,6 +26,22 @@ class ClosedTabs extends StatelessWidget {
       if (tabs.length > 0)
         return Column(
           children: <Widget>[
+            OutlineButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (_) => new ConfirmDialog(
+                    title: "Delete all closed tabs?",
+                    content: "You cannot undo this action",
+                    confirmText: "Delete all",
+                    confirm: () => TabsController.deleteAllTabs(tabs),
+                  ),
+                );
+              },
+              color: Colors.white,
+              textColor: Colors.white,
+              child: Text("Delete All"),
+            ),
             AnimationLimiter(
               child: Expanded(
                 child: GridView.builder(
