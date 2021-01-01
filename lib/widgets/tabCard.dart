@@ -20,7 +20,7 @@ class TabCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(18),
         onLongPress: () {
-          Provider.of<FilterState>(context).filterByName(this.tab["name"]);
+          Provider.of<FilterState>(context, listen: false).filterByName(this.tab["name"]);
         },
         onTap: () {
           showModalBottomSheet(

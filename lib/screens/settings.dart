@@ -39,7 +39,7 @@ class Settings extends StatelessWidget {
                           Provider.of<SettingsState>(context).selectedCurrency,
                       onSelected: (bool selected) {
                         if (selected)
-                          Provider.of<SettingsState>(context)
+                          Provider.of<SettingsState>(context, listen: false)
                               .selectCurrency(currencies[index]);
                       },
                     );

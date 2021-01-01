@@ -23,21 +23,9 @@ class TabsInfoHeader extends StatelessWidget {
   }
 
   String getHeaderText(List<DocumentSnapshot> tabs) {
-    String text = "${tabs.length} OPEN TAB";
-    if (tabs.length != 1) text += "S";
+    String text = "${tabs.length} open tab";
+    if (tabs.length != 1) text += "s";
     return text;
-  }
-
-  Widget displayFilterChip(String name, Function onDeleted) {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 250),
-      child: Chip(
-        backgroundColor: Colors.white70,
-        label: Text("$name's tabs"),
-        onDeleted: onDeleted,
-        deleteIcon: Icon(Icons.clear),
-      ),
-    );
   }
 
   @override
@@ -60,25 +48,22 @@ class TabsInfoHeader extends StatelessWidget {
             : MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
-          Text(
-            getHeaderText(tabs),
-            style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
-          ),
-          SizedBox(
-            height: 10,
-          ),
+          if (Provider.of<FilterState>(context).filterEnabled)
+            Text(
+              "${Provider.of<FilterState>(context).nameFilter}'s tabs",
+              style:
+                  TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+            )
+          else
+            Text(
+              getHeaderText(tabs),
+              style:
+                  TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+            ),
           Text(
               getTotalAmountFormatted(
                   tabs, Provider.of<SettingsState>(context).selectedCurrency),
               style: Theme.of(context).textTheme.headline3),
-          SizedBox(
-            height: 10,
-          ),
-          if (Provider.of<FilterState>(context).filterEnabled)
-            displayFilterChip(
-              Provider.of<FilterState>(context).nameFilter,
-              Provider.of<FilterState>(context).removeFilter,
-            ),
         ],
       ),
     );
