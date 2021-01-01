@@ -16,7 +16,7 @@ class ConfirmDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!Platform.isIOS) {
+    if (Platform.isIOS) {
       return CupertinoAlertDialog(
         title: Text(title),
         content: Text(content),

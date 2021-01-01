@@ -4,6 +4,13 @@ import 'package:tabs/services/auth.dart';
 import 'package:flutter/services.dart';
 
 abstract class TabsController {
+  static Stream<QuerySnapshot> getUsersTabs(String uid) {
+    return Firestore.instance
+        .collection("tabs")
+        .where("uid", isEqualTo: uid)
+        .snapshots();
+  }
+
   static Future createTab({
     String name,
     double amount,
@@ -11,6 +18,7 @@ abstract class TabsController {
     bool userOwesFriend,
   }) async {
     FirebaseUser user = await Auth.getCurrentUser();
+    HapticFeedback.mediumImpact();
     return Firestore.instance.collection("tabs").add({
       "name": name,
       "amount": amount,
@@ -20,13 +28,6 @@ abstract class TabsController {
       "userOwesFriend": userOwesFriend,
       "uid": user.uid
     });
-  }
-
-  static Stream<QuerySnapshot> getUsersTabs(String uid) {
-    return Firestore.instance
-        .collection("tabs")
-        .where("uid", isEqualTo: uid)
-        .snapshots();
   }
 
   static Future updateAmount(String tabId, double newAmount) {
@@ -61,7 +62,8 @@ abstract class TabsController {
   static Future<void> closeAllTabs(Iterable<DocumentSnapshot> tabs) async {
     WriteBatch writeBatch = Firestore.instance.batch();
     tabs.forEach((t) {
-      writeBatch.updateData(t.reference, {"closed": true, "timeClosed": DateTime.now()});
+      writeBatch.updateData(
+          t.reference, {"closed": true, "timeClosed": DateTime.now()});
     });
     writeBatch.commit();
     HapticFeedback.mediumImpact();
