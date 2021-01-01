@@ -23,7 +23,6 @@ class ClosedTabs extends StatelessWidget {
         tabs = tabsData.documents;
       /* filter tabs by closed status */
       tabs = TabsController.filterClosedTabs(tabs);
-      tabs.sort((a, b) => a["time"].toDate().compareTo(b["time"].toDate()));
 
       if (tabs.length > 0)
         return Column(

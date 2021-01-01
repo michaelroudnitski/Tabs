@@ -7,7 +7,6 @@ import 'package:tabs/widgets/tabCard.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class OpenTabs extends StatelessWidget {
-  // final bool showOpenTabs;
   OpenTabs();
 
   @override
@@ -24,7 +23,6 @@ class OpenTabs extends StatelessWidget {
         tabs = tabsData.documents;
       /* filter tabs by closed status */
       tabs = TabsController.filterOpenTabs(tabs);
-      tabs.sort((a, b) => a["time"].toDate().compareTo(b["time"].toDate()));
 
       if (tabs.length > 0)
         return Column(
