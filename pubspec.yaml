@@ -14,7 +14,7 @@ dependencies:
   firebase_auth: ^0.15.3+1
   cloud_firestore:
   provider: ^4.0.2
-  permission_handler:
+  permission_handler: ^4.0.0
   contacts_service:
   flutter_typeahead:
   flutter_money_formatter:
