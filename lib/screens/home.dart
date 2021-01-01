@@ -90,55 +90,57 @@ class Home extends StatelessWidget {
   }
 }
 
-void _showSignOutDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      if (Platform.isIOS) {
-        return CupertinoAlertDialog(
-          title: Text("Confirm sign out?"),
-          content: Text("Your Tabs will still be here next time you sign in"),
-          actions: <Widget>[
-            CupertinoDialogAction(
-              child: Text("Cancel"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            CupertinoDialogAction(
-              child: Text("Sign Out"),
-              onPressed: () {
-                Auth.signOut();
-                Navigator.pushReplacementNamed(context, Welcome.id);
-              },
-            ),
-          ],
-        );
-      } else
-        return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          title: Text("Confirm sign out?"),
-          content: Text("Your Tabs will still be here next time you sign in"),
-          actions: <Widget>[
-            FlatButton(
-              child: Text("Cancel"),
-              textColor: Colors.black87,
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            FlatButton(
-              child: Text("Sign Out"),
-              textColor: Colors.red,
-              onPressed: () {
-                Auth.signOut();
-                Navigator.pushReplacementNamed(context, Welcome.id);
-              },
-            ),
-          ],
-        );
-    },
-  );
+void _showSignOutDialog(BuildContext context) async {
+  final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          final cancel = () => Navigator.of(context).pop(false);
+          final confirm = () => Navigator.of(context).pop(true);
+
+          if (Platform.isIOS) {
+            return CupertinoAlertDialog(
+              title: Text("Confirm sign out?"),
+              content:
+                  Text("Your Tabs will still be here next time you sign in"),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  child: Text("Cancel"),
+                  onPressed: cancel,
+                ),
+                CupertinoDialogAction(
+                  child: Text("Sign Out"),
+                  onPressed: confirm,
+                ),
+              ],
+            );
+          } else
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)),
+              title: Text("Confirm sign out?"),
+              content:
+                  Text("Your Tabs will still be here next time you sign in"),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text("Cancel"),
+                  textColor: Colors.black87,
+                  onPressed: cancel,
+                ),
+                FlatButton(
+                  child: Text("Sign Out"),
+                  textColor: Colors.red,
+                  onPressed: confirm,
+                ),
+              ],
+            );
+        },
+      ) ??
+      false;
+
+  if (confirmed) {
+    Auth.signOut();
+    Navigator.pushNamedAndRemoveUntil(context, Welcome.id, (_) => false);
+  }
 }
 
 void _showEmailConfirmDialog(BuildContext context) {

@@ -38,9 +38,10 @@ class _LoginState extends State<Login> {
             await Auth.signIn(_emailController.text, _passwordController.text);
         if (user != null)
           Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => Home(user)),
-              ModalRoute.withName("/"));
+            context,
+            MaterialPageRoute(builder: (context) => Home(user)),
+            (_) => false,
+          );
       } catch (e) {
         setState(() {
           loading = false;
