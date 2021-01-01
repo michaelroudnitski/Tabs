@@ -23,7 +23,13 @@ class _CreateFormState extends State<CreateForm> {
     TextEditingController(),
     TextEditingController()
   ];
+  final _focusNodes = [
+    FocusNode(),
+    FocusNode(),
+    FocusNode(),
+  ];
   List<Widget> _pages;
+  int _pageIndex = 0;
   double _formProgress = 0.15;
   bool userOwesFriend = false;
   bool suggestionsRemovable = false;
@@ -32,6 +38,16 @@ class _CreateFormState extends State<CreateForm> {
   void initState() {
     super.initState();
     Contacts.checkPermission();
+  }
+
+  @override
+  void dispose() {
+    // Clean up the focus nodes when the Form is disposed.
+    _focusNodes.forEach((element) {
+      element.dispose();
+    });
+
+    super.dispose();
   }
 
   void _submitTab() {
@@ -45,23 +61,27 @@ class _CreateFormState extends State<CreateForm> {
   }
 
   void goBack() {
-    _formProgress -= 1 / _pages.length;
+    setState(() {
+      _formProgress -= 1 / _pages.length;
+      _focusNodes[--_pageIndex].requestFocus();
+      suggestionsRemovable = false;
+    });
     _pageViewController.previousPage(
       duration: const Duration(milliseconds: 300),
       curve: Curves.fastOutSlowIn,
     );
-    suggestionsRemovable = false;
-    FocusScope.of(context).unfocus();
   }
 
   void goNext() {
-    _formProgress += 1 / _pages.length;
+    setState(() {
+      _formProgress += 1 / _pages.length;
+      _focusNodes[++_pageIndex].requestFocus();
+      suggestionsRemovable = false;
+    });
     _pageViewController.nextPage(
       duration: const Duration(milliseconds: 300),
       curve: Curves.fastOutSlowIn,
     );
-    suggestionsRemovable = false;
-    FocusScope.of(context).unfocus();
   }
 
   Widget buildPage({
@@ -232,6 +252,7 @@ class _CreateFormState extends State<CreateForm> {
             controller: _textControllers[0],
             textCapitalization: TextCapitalization.sentences,
             autofocus: true,
+            focusNode: _focusNodes[0],
             decoration: InputDecoration(prefixIcon: Icon(Icons.person)),
           ),
           suggestionsBoxDecoration: SuggestionsBoxDecoration(
@@ -277,7 +298,7 @@ class _CreateFormState extends State<CreateForm> {
         ),
         textField: TextFormField(
           controller: _textControllers[1],
-          autofocus: true,
+          focusNode: _focusNodes[1],
           inputFormatters: [WhitelistingTextInputFormatter(RegExp("[0-9.]"))],
           keyboardType: TextInputType.numberWithOptions(decimal: true),
           decoration: InputDecoration(prefixIcon: Icon(Icons.card_giftcard)),
@@ -299,7 +320,7 @@ class _CreateFormState extends State<CreateForm> {
             : "Why does ${_textControllers[0].text} owe you ${settingsState.selectedCurrency}${_textControllers[1].text}?",
         textField: TextFormField(
           controller: _textControllers[2],
-          autofocus: true,
+          focusNode: _focusNodes[2],
           textCapitalization: TextCapitalization.sentences,
           decoration: InputDecoration(
             prefixIcon: Icon(Icons.message),

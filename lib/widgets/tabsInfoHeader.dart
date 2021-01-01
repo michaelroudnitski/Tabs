@@ -40,7 +40,7 @@ class TabsInfoHeader extends StatelessWidget {
       tabs = openTabs;
 
     return Container(
-      height: 100,
+      height: 80,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: tabs.length > 0
