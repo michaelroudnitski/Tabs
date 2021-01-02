@@ -77,16 +77,4 @@ abstract class TabsController {
     writeBatch.commit();
     HapticFeedback.mediumImpact();
   }
-
-  static List<DocumentSnapshot> filterOpenTabs(
-      Iterable<DocumentSnapshot> tabs) {
-    return tabs.where((tab) => tab["closed"] != true).toList()
-      ..sort((a, b) => a["time"].toDate().compareTo(b["time"].toDate()));
-  }
-
-  static List<DocumentSnapshot> filterClosedTabs(
-      Iterable<DocumentSnapshot> tabs) {
-    return tabs.where((tab) => tab["closed"] == true).toList()
-      ..sort((a, b) => a["time"].toDate().compareTo(b["time"].toDate()));
-  }
 }

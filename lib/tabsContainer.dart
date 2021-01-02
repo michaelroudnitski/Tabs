@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:tabs/controllers/tabsController.dart';
-import 'package:tabs/providers/filterState.dart';
+import 'package:tabs/providers/tabsState.dart';
 import 'package:tabs/widgets/openTabs.dart';
 import 'package:tabs/widgets/closedTabs.dart';
 import 'package:tabs/widgets/tabsInfoHeader.dart';
@@ -40,12 +39,16 @@ class _TabsContainerState extends State<TabsContainer> {
             ),
           );
         else
-          return ChangeNotifierProvider<FilterState>(
-            create: (context) => FilterState(),
+          return ChangeNotifierProvider<TabsState>(
+            create: (_) => TabsState(),
             child: Column(
               children: <Widget>[
-                TabsInfoHeader(
-                  TabsController.filterOpenTabs(tabsData.documents),
+                Consumer<TabsState>(
+                  builder: (context, tabsState, child) {
+                    return TabsInfoHeader(
+                      openTabs: tabsState.openTabs(tabsData),
+                    );
+                  },
                 ),
                 Stack(
                   alignment: AlignmentDirectional.topStart,
@@ -71,7 +74,22 @@ class _TabsContainerState extends State<TabsContainer> {
                       });
                     },
                     physics: ClampingScrollPhysics(),
-                    children: <Widget>[OpenTabs(), ClosedTabs()],
+                    children: <Widget>[
+                      Consumer<TabsState>(
+                        builder: (context, tabsState, child) {
+                          return OpenTabs(
+                            tabs: tabsState.openTabs(tabsData),
+                          );
+                        },
+                      ),
+                      Consumer<TabsState>(
+                        builder: (context, tabsState, child) {
+                          return ClosedTabs(
+                            tabs: tabsState.closedTabs(tabsData),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ],

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
-import 'package:tabs/providers/filterState.dart';
+import 'package:tabs/providers/tabsState.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:tabs/providers/settingsState.dart';
 
 class TabsInfoHeader extends StatelessWidget {
   final List<DocumentSnapshot> openTabs;
 
-  TabsInfoHeader(this.openTabs);
+  TabsInfoHeader({@required this.openTabs});
 
   String getTotalAmountFormatted(
       List<DocumentSnapshot> tabs, String currencySymbol) {
@@ -30,40 +30,38 @@ class TabsInfoHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<DocumentSnapshot> tabs;
-    if (Provider.of<FilterState>(context).filterEnabled)
-      tabs = openTabs
-          .where((doc) =>
-              doc["name"] == Provider.of<FilterState>(context).nameFilter)
-          .toList();
-    else
-      tabs = openTabs;
-
     return Container(
       height: 80,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: tabs.length > 0
+        mainAxisAlignment: openTabs.length > 0
             ? MainAxisAlignment.start
             : MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
-          if (Provider.of<FilterState>(context).filterEnabled)
+          if (Provider.of<TabsState>(context).filterEnabled)
             Text(
-              "${Provider.of<FilterState>(context).nameFilter}'s tabs",
-              style:
-                  TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+              "${Provider.of<TabsState>(context).name}'s tabs",
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
+              ),
             )
           else
             Text(
-              getHeaderText(tabs),
-              style:
-                  TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+              getHeaderText(openTabs),
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
+              ),
             ),
           Text(
-              getTotalAmountFormatted(
-                  tabs, Provider.of<SettingsState>(context).selectedCurrency),
-              style: Theme.of(context).textTheme.headline3),
+            getTotalAmountFormatted(
+              openTabs,
+              Provider.of<SettingsState>(context).selectedCurrency,
+            ),
+            style: Theme.of(context).textTheme.headline3,
+          ),
         ],
       ),
     );

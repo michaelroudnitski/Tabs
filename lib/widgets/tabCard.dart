@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:provider/provider.dart';
-import 'package:tabs/providers/filterState.dart';
+import 'package:tabs/providers/tabsState.dart';
 import 'package:tabs/providers/settingsState.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:tabs/widgets/tabModal.dart';
@@ -20,7 +20,7 @@ class TabCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(18),
         onLongPress: () {
-          Provider.of<FilterState>(context, listen: false).filterByName(this.tab["name"]);
+          Provider.of<TabsState>(context, listen: false).filterByName(this.tab["name"]);
         },
         onTap: () {
           showModalBottomSheet(
