@@ -19,14 +19,16 @@ class TabsState with ChangeNotifier {
     return tabs.documents
         .where((t) => t["closed"] == false)
         .where((t) => nameMatches(t["name"]))
-        .toList();
+        .toList()
+          ..sort((a, b) => a["time"].toDate().compareTo(b["time"].toDate()));
   }
 
   List<DocumentSnapshot> closedTabs(QuerySnapshot tabs) {
     return tabs.documents
         .where((t) => t["closed"] == true)
         .where((t) => nameMatches(t["name"]))
-        .toList();
+        .toList()
+          ..sort((a, b) => a["time"].toDate().compareTo(b["time"].toDate()));
   }
 
   void filterByName(String name) {
