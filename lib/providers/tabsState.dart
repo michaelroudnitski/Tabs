@@ -14,6 +14,7 @@ class TabsState with ChangeNotifier {
   }
 
   List<DocumentSnapshot> openTabs(QuerySnapshot tabs) {
+    // TODO: remove name filter if all tabs for that filter have been closed
     return tabs.documents
         .where((t) => t["closed"] == false)
         .where((t) => nameMatches(t["name"]))

@@ -73,7 +73,6 @@ class _TabsContainerState extends State<TabsContainer> {
                         currentPageIndex = page;
                       });
                     },
-                    physics: ClampingScrollPhysics(),
                     children: <Widget>[
                       Consumer<TabsState>(
                         builder: (context, tabsState, child) {

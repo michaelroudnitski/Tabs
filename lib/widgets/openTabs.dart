@@ -2,11 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tabs/controllers/tabsController.dart';
 import 'package:tabs/widgets/tabCard.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:auto_animated/auto_animated.dart';
 import 'package:tabs/widgets/confirmDialog.dart';
 
 class OpenTabs extends StatelessWidget {
   final List<DocumentSnapshot> tabs;
+
+  final options = LiveOptions(
+    delay: Duration(milliseconds: 0),
+    showItemInterval: Duration(milliseconds: 60),
+    showItemDuration: Duration(milliseconds: 250),
+  );
 
   OpenTabs({@required this.tabs});
 
@@ -35,27 +41,40 @@ class OpenTabs extends StatelessWidget {
             textColor: Colors.white,
             child: Text("Close All"),
           ),
-          AnimationLimiter(
-            child: Expanded(
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2),
-                padding: EdgeInsets.all(8.0),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: LiveGrid.options(
                 itemCount: tabs.length,
-                itemBuilder: (context, index) {
-                  return AnimationConfiguration.staggeredGrid(
-                    position: index,
-                    duration: const Duration(milliseconds: 375),
-                    columnCount: 2,
-                    child: ScaleAnimation(
-                      child: FadeInAnimation(
-                        child: TabCard(
-                          tab: tabs[index],
-                        ),
-                      ),
+                options: options,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                ),
+                itemBuilder: (
+                  BuildContext context,
+                  int index,
+                  Animation<double> animation,
+                ) =>
+                    FadeTransition(
+                  opacity: Tween<double>(
+                    begin: 0,
+                    end: 1,
+                  ).animate(animation),
+                  child: SlideTransition(
+                    position: Tween<Offset>(
+                      begin: Offset(-2, -0.1),
+                      end: Offset.zero,
+                    ).animate(CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.fastLinearToSlowEaseIn,
+                    )),
+                    child: TabCard(
+                      tab: tabs[index],
                     ),
-                  );
-                },
+                  ),
+                ),
               ),
             ),
           ),
