@@ -5,7 +5,7 @@ class TabsState with ChangeNotifier {
   String _name = "";
 
   String get name => _name;
-  
+
   bool get filterEnabled => _name != "";
 
   bool nameMatches(String name) {
@@ -14,7 +14,8 @@ class TabsState with ChangeNotifier {
   }
 
   List<DocumentSnapshot> openTabs(QuerySnapshot tabs) {
-    // TODO: remove name filter if all tabs for that filter have been closed
+    // make sure we clear the name filter if all the tabs have been removed for that person
+    if (tabs.documents.where((t) => nameMatches(t["name"])).isEmpty) _name = "";
     return tabs.documents
         .where((t) => t["closed"] == false)
         .where((t) => nameMatches(t["name"]))
