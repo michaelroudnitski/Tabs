@@ -47,7 +47,7 @@ class Home extends StatelessWidget {
               color: Theme.of(context).accentColor,
               icon: Icon(Icons.settings),
               onPressed: () {
-                Navigator.of(context).pushNamed(Settings.id);
+                Navigator.of(context).pushNamed(SettingsScreen.id);
               },
             ),
           ),

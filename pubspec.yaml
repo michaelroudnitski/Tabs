@@ -11,19 +11,19 @@ dependencies:
     sdk: flutter
   cupertino_icons:
   firebase_core:
-  firebase_auth: ^0.15.3+1
-  cloud_firestore:
-  provider: ^4.0.2
-  permission_handler: ^4.0.0
+  firebase_auth: ^1.0.0
+  cloud_firestore: ^2.2.2
+  provider: ^5.0.0
+  permission_handler: ^8.1.0
   contacts_service:
   flutter_typeahead:
-  flutter_money_formatter:
   timeago:
   flutter_spinkit:
   flutter_staggered_animations:
-  auto_animated: ^2.1.0
+  auto_animated: ^3.0.0
+  money2: ^2.1.4
   google_sign_in:
-  flutter_signin_button: ^1.0.0
+  flutter_signin_button: ^2.0.0
   apple_sign_in: ^0.1.0
   shared_preferences:
 

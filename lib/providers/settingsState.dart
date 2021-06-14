@@ -1,5 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
+import 'package:money2/money2.dart';
 
 class SettingsState with ChangeNotifier {
   static const currencies = [
@@ -17,14 +18,15 @@ class SettingsState with ChangeNotifier {
     '฿',
     '₪'
   ];
-  String selectedCurrency = "\$";
+  Currency selectedCurrency = Currencies.find("USD");
 
   SettingsState() {
+    CommonCurrencies().registerAll();
     fetchSettings();
   }
 
-  void selectCurrency(String currency) {
-    selectedCurrency = currency;
+  void selectCurrency(String currencyCode) {
+    selectedCurrency = Currencies.find(currencyCode);
     notifyListeners();
     updateSettings();
   }
@@ -32,9 +34,9 @@ class SettingsState with ChangeNotifier {
   void fetchSettings() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
-      String currency = prefs.getString('currency') ?? "\$";
+      String currency = prefs.getString('currency') ?? "USD";
       print(currency);
-      if (currency != "\$") selectCurrency(currency);
+      selectCurrency(currency);
     } catch (e) {
       return null;
     }
@@ -42,6 +44,6 @@ class SettingsState with ChangeNotifier {
 
   void updateSettings() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('currency', selectedCurrency);
+    await prefs.setString('currency', selectedCurrency.code);
   }
 }

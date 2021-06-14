@@ -35,12 +35,6 @@ class _CreateFormState extends State<CreateForm> {
   bool suggestionsRemovable = false;
 
   @override
-  void initState() {
-    super.initState();
-    Contacts.checkPermission();
-  }
-
-  @override
   void dispose() {
     // Clean up the focus nodes when the Form is disposed.
     _focusNodes.forEach((element) {

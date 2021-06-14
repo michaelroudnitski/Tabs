@@ -5,24 +5,6 @@ class Contacts {
   static List<String> _contacts;
   static bool hasRequestedThisSession = false;
 
-  static Future<PermissionStatus> checkPermission() async {
-    PermissionStatus permission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.contacts);
-    bool showRationale = await PermissionHandler()
-            .shouldShowRequestPermissionRationale(PermissionGroup.contacts) &&
-        !hasRequestedThisSession;
-    if (permission == PermissionStatus.unknown || showRationale) {
-      // ask the user for contact permission
-      Map<PermissionGroup, PermissionStatus> statuses =
-          await PermissionHandler()
-              .requestPermissions([PermissionGroup.contacts]);
-      hasRequestedThisSession = true;
-      return statuses[PermissionGroup.contacts];
-    } else {
-      return permission;
-    }
-  }
-
   static Future<void> _getContacts() async {
     try {
       Iterable<Contact> contacts =
@@ -38,9 +20,9 @@ class Contacts {
   }
 
   static Future<List<String>> queryContacts(pattern) async {
-    if (_contacts == null &&
-        await checkPermission() == PermissionStatus.granted)
+    if (_contacts == null && await Permission.contacts.request().isGranted)
       await _getContacts();
+
     if (_contacts != null && _contacts.length > 0 && pattern.length > 0) {
       return _contacts
           .where((contact) =>

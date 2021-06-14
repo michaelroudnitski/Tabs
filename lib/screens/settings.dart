@@ -7,14 +7,14 @@ import 'package:tabs/widgets/confirmDialog.dart';
 import 'package:tabs/services/auth.dart';
 import 'package:tabs/screens/welcome.dart';
 
-class Settings extends StatefulWidget {
+class SettingsScreen extends StatefulWidget {
   static const String id = "/settings";
 
   @override
   _SettingsState createState() => _SettingsState();
 }
 
-class _SettingsState extends State<Settings> {
+class _SettingsState extends State<SettingsScreen> {
   final currencies = SettingsState.currencies;
 
   @override
@@ -71,7 +71,7 @@ class _SettingsState extends State<Settings> {
                 future: Auth.getCurrentUser(),
                 builder: (
                   BuildContext context,
-                  AsyncSnapshot<FirebaseUser> snapshot,
+                  AsyncSnapshot<User> snapshot,
                 ) {
                   if (snapshot.hasData) {
                     return Column(
@@ -82,7 +82,7 @@ class _SettingsState extends State<Settings> {
 
                         Text(snapshot.data.email,
                             style: Theme.of(context).textTheme.subtitle1),
-                        if (!snapshot.data.isEmailVerified)
+                        if (!snapshot.data.emailVerified)
                           Text(
                             "Account pending email verification",
                             style: TextStyle(color: Colors.orange),
