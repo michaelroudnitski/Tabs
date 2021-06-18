@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 
 abstract class TabsController {
   static Stream<QuerySnapshot> getUsersTabs(String uid) {
-    return Firestore.instance
+    return FirebaseFirestore.instance
         .collection("tabs")
         .where("uid", isEqualTo: uid)
         .snapshots();
@@ -17,9 +17,9 @@ abstract class TabsController {
     String description,
     bool userOwesFriend,
   }) async {
-    FirebaseUser user = await Auth.getCurrentUser();
+    User user = await Auth.getCurrentUser();
     HapticFeedback.mediumImpact();
-    return Firestore.instance.collection("tabs").add({
+    return FirebaseFirestore.instance.collection("tabs").add({
       "name": name,
       "amount": amount,
       "description": description,
@@ -32,37 +32,37 @@ abstract class TabsController {
 
   static Future updateAmount(String tabId, double newAmount) {
     HapticFeedback.mediumImpact();
-    return Firestore.instance
+    return FirebaseFirestore.instance
         .collection("tabs")
-        .document(tabId)
-        .updateData({"amount": newAmount});
+        .doc(tabId)
+        .update({"amount": newAmount});
   }
 
   static Future closeTab(String tabId) {
     HapticFeedback.mediumImpact();
-    return Firestore.instance
+    return FirebaseFirestore.instance
         .collection("tabs")
-        .document(tabId)
-        .updateData({"closed": true, "timeClosed": DateTime.now()});
+        .doc(tabId)
+        .update({"closed": true, "timeClosed": DateTime.now()});
   }
 
   static Future reopenTab(String tabId) {
     HapticFeedback.mediumImpact();
-    return Firestore.instance
+    return FirebaseFirestore.instance
         .collection("tabs")
-        .document(tabId)
-        .updateData({"closed": false, "timeClosed": null});
+        .doc(tabId)
+        .update({"closed": false, "timeClosed": null});
   }
 
   static Future deleteTab(String tabId) {
     HapticFeedback.mediumImpact();
-    return Firestore.instance.collection("tabs").document(tabId).delete();
+    return FirebaseFirestore.instance.collection("tabs").doc(tabId).delete();
   }
 
   static Future<void> closeAllTabs(Iterable<DocumentSnapshot> tabs) async {
-    WriteBatch writeBatch = Firestore.instance.batch();
+    WriteBatch writeBatch = FirebaseFirestore.instance.batch();
     tabs.forEach((t) {
-      writeBatch.updateData(
+      writeBatch.update(
           t.reference, {"closed": true, "timeClosed": DateTime.now()});
     });
     writeBatch.commit();
@@ -70,7 +70,7 @@ abstract class TabsController {
   }
 
   static Future<void> deleteAllTabs(Iterable<DocumentSnapshot> tabs) async {
-    WriteBatch writeBatch = Firestore.instance.batch();
+    WriteBatch writeBatch = FirebaseFirestore.instance.batch();
     tabs.forEach((t) {
       writeBatch.delete(t.reference);
     });

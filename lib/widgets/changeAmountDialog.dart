@@ -53,7 +53,7 @@ class _ChangeAmountDialogState extends State<ChangeAmountDialog> {
                   try {
                     double newAmount = double.parse(_amountController.text);
                     TabsController.updateAmount(
-                        widget.tab.documentID, newAmount);
+                        widget.tab.id, newAmount);
                     Navigator.pop(context);
                     Navigator.pop(context);
                   } catch (e) {}

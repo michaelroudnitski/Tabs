@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_money_formatter/flutter_money_formatter.dart';
+import 'package:money2/money2.dart';
 import 'package:provider/provider.dart';
 import 'package:tabs/controllers/tabsController.dart';
 import 'package:tabs/providers/settingsState.dart';
@@ -15,7 +15,7 @@ class TabModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String displayAmount =
-        FlutterMoneyFormatter(amount: this.tab["amount"]).output.nonSymbol;
+        Money.from(this.tab["amount"], Currencies.find('USD')).toString();
     DateFormat formatter = DateFormat("yyyy/MM/dd");
     String formattedDateOpened =
         formatter.format(DateTime.parse(this.tab["time"].toDate().toString()));
@@ -71,7 +71,7 @@ class TabModal extends StatelessWidget {
                   style: Theme.of(context).textTheme.subtitle2,
                 ),
                 Text(
-                  "${Provider.of<SettingsState>(context).selectedCurrency} $displayAmount",
+                  displayAmount,
                   style: Theme.of(context).textTheme.subtitle2,
                 ),
               ],
@@ -95,7 +95,7 @@ class TabModal extends StatelessWidget {
                       : "Change Amount"),
                   onPressed: () {
                     if (this.tab["closed"] == true) {
-                      TabsController.reopenTab(this.tab.documentID);
+                      TabsController.reopenTab(this.tab.id);
                       Navigator.pop(context);
                     } else
                       showDialog(
@@ -110,8 +110,8 @@ class TabModal extends StatelessWidget {
                       Text(this.tab["closed"] == true ? "Delete" : "Close Tab"),
                   onPressed: () {
                     this.tab["closed"] == true
-                        ? TabsController.deleteTab(this.tab.documentID)
-                        : TabsController.closeTab(this.tab.documentID);
+                        ? TabsController.deleteTab(this.tab.id)
+                        : TabsController.closeTab(this.tab.id);
                     Navigator.pop(context);
                   },
                 )

@@ -6,16 +6,16 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 abstract class Auth {
   static Future<String> signIn(String email, String password) async {
-    AuthResult result = await FirebaseAuth.instance
+    UserCredential result = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
-    FirebaseUser user = result.user;
+    User user = result.user;
     return user.uid;
   }
 
   static Future<String> signUp(String email, String password) async {
-    AuthResult result = await FirebaseAuth.instance
+    UserCredential result = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
-    FirebaseUser user = result.user;
+    User user = result.user;
     return user.uid;
   }
 
@@ -27,14 +27,13 @@ abstract class Auth {
     switch (result.status) {
       case AuthorizationStatus.authorized:
         final AppleIdCredential appleIdCredential = result.credential;
-        final OAuthProvider oAuthProvider =
-            OAuthProvider(providerId: "apple.com");
-        final AuthCredential credential = oAuthProvider.getCredential(
+        final OAuthProvider oAuthProvider = OAuthProvider("apple.com");
+        final AuthCredential credential = oAuthProvider.credential(
           idToken: String.fromCharCodes(appleIdCredential.identityToken),
           accessToken:
               String.fromCharCodes(appleIdCredential.authorizationCode),
         );
-        final AuthResult _res =
+        final UserCredential _res =
             await FirebaseAuth.instance.signInWithCredential(credential);
         return _res.user.uid;
         break;
@@ -58,20 +57,19 @@ abstract class Auth {
       final GoogleSignInAuthentication googleSignInAuthentication =
           await googleAccount.authentication;
 
-      final AuthCredential credential = GoogleAuthProvider.getCredential(
+      final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken,
       );
 
-      final AuthResult authResult =
+      final UserCredential authResult =
           await FirebaseAuth.instance.signInWithCredential(credential);
-      final FirebaseUser user = authResult.user;
+      final User user = authResult.user;
 
       assert(!user.isAnonymous);
       assert(await user.getIdToken() != null);
 
-      final FirebaseUser currentUser =
-          await FirebaseAuth.instance.currentUser();
+      final User currentUser = FirebaseAuth.instance.currentUser;
       assert(user.uid == currentUser.uid);
       return user.uid;
     } catch (error) {
@@ -91,25 +89,25 @@ abstract class Auth {
     return FirebaseAuth.instance.signOut();
   }
 
-  static Future<FirebaseUser> getCurrentUser() async {
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  static Future<User> getCurrentUser() async {
+    User user = await FirebaseAuth.instance.currentUser;
     return user;
   }
 
   static Future<void> sendEmailVerification() async {
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    User user = await FirebaseAuth.instance.currentUser;
     user.sendEmailVerification();
   }
 
   static Future<bool> isEmailVerified() async {
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    User user = await FirebaseAuth.instance.currentUser;
     try {
       await user.reload();
     } catch (e) {
-      return user.isEmailVerified;
+      return user.emailVerified;
     }
-    user = await FirebaseAuth.instance.currentUser();
-    return user.isEmailVerified;
+    user = await FirebaseAuth.instance.currentUser;
+    return user.emailVerified;
   }
 
   static Future<void> resetPassword(email) async {

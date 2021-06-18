@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,11 @@ import 'package:tabs/screens/settings.dart';
 import 'package:tabs/screens/welcome.dart';
 import 'package:tabs/services/auth.dart';
 
-void main() => runApp(App());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(App());
+}
 
 class App extends StatelessWidget {
   final Color primaryColor = Color(0xff03da9d);
@@ -60,11 +65,11 @@ class App extends StatelessWidget {
           Register.id: (context) => Register(),
           Login.id: (context) => Login(),
           NewTab.id: (context) => NewTab(),
-          Settings.id: (context) => Settings()
+          SettingsScreen.id: (context) => SettingsScreen()
         },
-        home: FutureBuilder<FirebaseUser>(
+        home: FutureBuilder<User>(
           future: Auth.getCurrentUser(),
-          builder: (context, AsyncSnapshot<FirebaseUser> userSnapshot) {
+          builder: (context, AsyncSnapshot<User> userSnapshot) {
             if (userSnapshot.connectionState == ConnectionState.done) {
               if (userSnapshot.error != null) {
                 print("error");

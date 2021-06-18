@@ -11,16 +11,18 @@ abstract class SuggestionsController {
 
   static Future<Map<String, dynamic>> fetchSuggestions() async {
     try {
-      FirebaseUser user = await Auth.getCurrentUser();
-      DocumentSnapshot doc = await Firestore.instance
+      User user = await Auth.getCurrentUser();
+      DocumentSnapshot doc = await FirebaseFirestore.instance
           .collection("suggestions")
-          .document(user.uid)
+          .doc(user.uid)
           .get();
       if (doc == null) return _defaultSuggestions;
+
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
       return {
-        "names": List<String>.from(doc.data["names"]),
-        "amounts": List<String>.from(doc.data["amounts"]),
-        "descriptions": Map<String, int>.from(doc.data["descriptions"])
+        "names": List<String>.from(data["names"]),
+        "amounts": List<String>.from(data["amounts"]),
+        "descriptions": Map<String, int>.from(data["descriptions"])
       };
     } catch (e) {
       return null;
@@ -28,10 +30,10 @@ abstract class SuggestionsController {
   }
 
   static void updateSuggestions(Map<String, dynamic> suggestions) async {
-    FirebaseUser user = await Auth.getCurrentUser();
-    await Firestore.instance
+    User user = await Auth.getCurrentUser();
+    await FirebaseFirestore.instance
         .collection("suggestions")
-        .document(user.uid)
-        .setData(suggestions);
+        .doc(user.uid)
+        .set(suggestions);
   }
 }

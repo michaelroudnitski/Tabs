@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:tabs/providers/tabsState.dart';
-import 'package:flutter_money_formatter/flutter_money_formatter.dart';
+import 'package:money2/money2.dart';
 import 'package:tabs/providers/settingsState.dart';
 
 class TabsInfoHeader extends StatelessWidget {
@@ -19,7 +19,7 @@ class TabsInfoHeader extends StatelessWidget {
             ? total -= tab["amount"]
             : total += tab["amount"];
     }
-    return "$currencySymbol ${FlutterMoneyFormatter(amount: total).output.nonSymbol}";
+    return Money.from(total, Currencies.find('USD')).toString();
   }
 
   String getHeaderText(List<DocumentSnapshot> tabs) {

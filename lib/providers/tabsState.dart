@@ -15,8 +15,8 @@ class TabsState with ChangeNotifier {
 
   List<DocumentSnapshot> openTabs(QuerySnapshot tabs) {
     // make sure we clear the name filter if all the tabs have been removed for that person
-    if (tabs.documents.where((t) => nameMatches(t["name"])).isEmpty) _name = "";
-    return tabs.documents
+    if (tabs.docs.where((t) => nameMatches(t["name"])).isEmpty) _name = "";
+    return tabs.docs
         .where((t) => t["closed"] == false)
         .where((t) => nameMatches(t["name"]))
         .toList()
@@ -24,7 +24,7 @@ class TabsState with ChangeNotifier {
   }
 
   List<DocumentSnapshot> closedTabs(QuerySnapshot tabs) {
-    return tabs.documents
+    return tabs.docs
         .where((t) => t["closed"] == true)
         .where((t) => nameMatches(t["name"]))
         .toList()
